@@ -1,0 +1,16 @@
+// Edit this array to add/modify events. Images live in frontend/public/images/.
+const events = [
+  { id: 'physics-workshop', title: 'Physics Workshop', description: 'Hands-on experiments in mechanics and optics. (Placeholder: replace with real details.)', date: '2026-10-24', time: '14:00', location: "Université d'Alger 1", category: 'Physics', image: '/images/event-physics.jpg', featured: true, registrationUrl: '' },
+  { id: 'astronomy-night', title: 'Astronomy Night', description: 'Telescope observation and a short talk on the night sky. (Placeholder.)', date: '2026-11-14', time: '19:00', location: "Université d'Alger 1", category: 'Astronomy', image: '/images/event-astro.jpg', featured: false, registrationUrl: '' },
+  { id: 'hackathon', title: 'Quanta Hackathon', description: 'A team coding competition around science and technology. (Placeholder.)', date: '2026-12-05', time: '09:00', location: "Université d'Alger 1", category: 'Competition', image: '/images/event-hack.jpg', featured: false, registrationUrl: '' },
+  { id: 'hackathon', title: 'Quanta Hackathon', description: 'A team coding competition around science and technology. (Placeholder.)', date: '2026-12-05', time: '09:00', location: "Université d'Alger 1", category: 'Competition', image: '/images/event-hack.jpg', featured: false, registrationUrl: '' },
+  { id: 'hackathon', title: 'Quanta Hackathon', description: 'A team coding competition around science and technology. (Placeholder.)', date: '2026-12-05', time: '09:00', location: "Université d'Alger 1", category: 'Competition', image: '/images/event-hack.jpg', featured: false, registrationUrl: '' },
+  { id: 'hackathon', title: 'Quanta Hackathon', description: 'A team coding competition around science and technology. (Placeholder.)', date: '2026-12-05', time: '09:00', location: "Université d'Alger 1", category: 'Competition', image: '/images/event-hack.jpg', featured: false, registrationUrl: '' },
+  { id: 'hackathon', title: 'Quanta Hackathon', description: 'A team coding competition around science and technology. (Placeholder.)', date: '2026-12-05', time: '09:00', location: "Université d'Alger 1", category: 'Competition', image: '/images/event-hack.jpg', featured: false, registrationUrl: '' },
+  { id: 'hackathon', title: 'Quanta Hackathon', description: 'A team coding competition around science and technology. (Placeholder.)', date: '2026-12-05', time: '09:00', location: "Université d'Alger 1", category: 'Competition', image: '/images/event-hack.jpg', featured: false, registrationUrl: '' },
+  { id: 'hackathon', title: 'Quanta Hackathon', description: 'A team coding competition around science and technology. (Placeholder.)', date: '2026-12-05', time: '09:00', location: "Université d'Alger 1", category: 'Competition', image: '/images/event-hack.jpg', featured: false, registrationUrl: '' },
+  { id: 'hackathon', title: 'Quanta Hackathon', description: 'A team coding competition around science and technology. (Placeholder.)', date: '2026-12-05', time: '09:00', location: "Université d'Alger 1", category: 'Competition', image: '/images/event-hack.jpg', featured: false, registrationUrl: '' },
+
+];
+export const allEvents = () => events;
+export const eventById = (id) => events.find((e) => e.id === id);
