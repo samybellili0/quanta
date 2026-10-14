@@ -18,8 +18,7 @@ export default function Navbar() {
       <button className={`burger ${open ? 'x' : ''}`} aria-label="Toggle menu" aria-expanded={open} aria-controls="menu" onClick={() => setOpen(!open)}><i /><i /><i /></button>
       <nav id="menu" aria-label="Main" className={open ? 'open' : ''}>
         {LINKS.map(([id, label]) => (
-          <a key={id} href={`/#${id}`} aria-current={active === id ? 'true' : undefined} onClick={() => setOpen(false)}>{label}</a>
-        ))}
+        <a key={id} href={id === 'join' ? '/join' : `/#${id}`} aria-current={(location.pathname === '/join' ? id === 'join' : active === id) ? 'true' : undefined} onClick={() => setOpen(false)}>{label}</a>        ))}
       </nav>
     </header>
   );

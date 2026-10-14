@@ -27,7 +27,7 @@ export default function Events() {
               <span className="chip">{e.category}</span>
               <h3>{e.title}</h3>
               <p className="muted">{fmtDate(e.date)}<br />{e.location}</p>
-              <p>{e.description}</p>
+              <p className="clamp">{e.description}</p>
               <Link className="btn ghost" to={`/events/${e.id}`}>Learn More</Link>
             </div>
           </motion.article>

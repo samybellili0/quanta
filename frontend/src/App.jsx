@@ -4,6 +4,7 @@ import Navbar from './components/Navbar.jsx';
 import Home from './pages/Home.jsx';
 import EventDetail from './pages/EventDetail.jsx';
 import { Footer } from './sections/Static.jsx';
+import JoinPage from './pages/JoinPage.jsx'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/events" element={<Home />} />
           <Route path="/events/:id" element={<EventDetail />} />
+          <Route path="/join" element={<JoinPage />} />
         </Routes>
       </main>
       <Footer />
