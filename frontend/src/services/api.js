@@ -9,3 +9,4 @@ async function req(path, opts) {
 export const getEvents = () => req('/events').then((j) => j.data);
 export const getEvent = (id) => req(`/events/${id}`).then((j) => j.data);
 export const postRegistration = (body) => req('/registrations', { method: 'POST', body: JSON.stringify(body) });
+export const postApplication = (body) => req('/applications', { method: 'POST', body: JSON.stringify(body) });
