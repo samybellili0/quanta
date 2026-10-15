@@ -90,3 +90,9 @@ input[aria-invalid=true],textarea[aria-invalid=true],select[aria-invalid=true]{b
 .footer nav h4{margin-top:0}
 .copy{text-align:center;opacity:.65;font-size:.9rem;margin-top:36px;padding-top:20px;border-top:1px solid var(--line)}
 @media(max-width:700px){.fgrid{grid-template-columns:1fr}.fname{font-size:1.2rem}}
+.field{display:grid;gap:6px;margin-bottom:18px}
+.field .ar{display:block;opacity:.7;font-size:.9em;margin-top:2px}
+.field input[type=text],.field input[type=tel],.field input[type=email],.field input[type=url],.field textarea,.field select{background:rgba(2,6,23,.7);border:1px solid var(--line);border-radius:8px;color:#fff;padding:10px;font:inherit;width:100%}
+.field [aria-invalid=true]{border-color:#f87171}
+.opts{display:grid;gap:10px}
+.err{color:#f87171;font-size:.85rem;margin:0}
