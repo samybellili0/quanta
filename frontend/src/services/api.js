@@ -1,5 +1,7 @@
+const API = import.meta.env.VITE_API_URL || '/api';
+
 async function req(path, opts) {
-  const res = await fetch(`/api${path}`, { headers: { 'Content-Type': 'application/json' }, ...opts });
+  const res = await fetch(`${API}${path}`, { headers: { 'Content-Type': 'application/json' }, ...opts });
   const json = await res.json().catch(() => ({}));
   if (!res.ok) throw Object.assign(new Error(json.message || 'Request failed'), { errors: json.errors });
   return json;
