@@ -1,72 +1,58 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { postRegistration } from '../services/api.js';
-import { DEPARTMENTS, TEAMS, RULES, PLEDGES } from '../data/club.js';
+import { postApplication } from '../services/api.js';
+import { DEPARTMENTS, RULES } from '../data/club.js';
+import { SECTIONS } from '../data/applyForm.js';
 
-const deptOpts = DEPARTMENTS.map((d) => [d.id, d.name]);
-// [name, label, type, required, min, options]
-const STEPS = [
-  ['About you', [
-    ['fullName', 'Full name', 'text', 1], ['email', 'Email', 'email', 1], ['phone', 'Phone number', 'tel', 1],
-    ['university', 'Faculty / Department', 'text', 1], ['fieldOfStudy', 'Field of study', 'text', 1], ['year', 'Year of study', 'text', 1],
-    ['github', 'GitHub (optional)', 'url', 0], ['linkedin', 'LinkedIn (optional)', 'url', 0],
-    ['facebook', 'Facebook link', 'url', 1],
-    ['orgMember', 'Are you a member of a political party, union or another student organization?', 'select', 1, 0, [['no', 'No'], ['yes', 'Yes']]],
-  ]],
-  ['Departments & skills', [
-    ['firstDept', 'First-choice department', 'select', 1, 0, deptOpts], ['secondDept', 'Second-choice department', 'select', 1, 0, deptOpts],
-    ['team', 'Scientific team (optional, mainly for Events)', 'select', 0, 0, TEAMS],
-    ['availability', 'Hours per week you can give the club', 'select', 1, 0, [['2-4', '2 to 4 hours'], ['5-8', '5 to 8 hours'], ['9+', '9 hours or more']]],
-    ['skills', 'Your skills and tools', 'text', 1, 2], ['interests', 'Scientific interests', 'text', 1, 5],
-    ['experience', 'Past projects, clubs or competitions (what you did and what you delivered)', 'textarea', 1, 20],
-  ]],
-  ['Your answers', [
-    ['motivation', 'Why do you want to join Quanta? (min. 100 characters)', 'textarea', 1, 100],
-    ['whyDept', 'Why your first-choice department, and what will you bring to it?', 'textarea', 1, 60],
-    ['scenarioDeadline', 'You signed a task due Friday and you cannot finish it. What do you do, and when?', 'textarea', 1, 60],
-    ['scenarioExams', 'Exams are coming and the club needs you the same week. How do you handle it?', 'textarea', 1, 60],
-    ['eventIdea', 'Propose one science event for Quanta: goal, audience, format and what you would need.', 'textarea', 1, 60],
-  ]],
-];
-const PLEDGE_STEP = STEPS.length;
-const empty = { ...Object.fromEntries(STEPS.flatMap(([, f]) => f.map((x) => [x[0], '']))), pledges: PLEDGES.map(() => false), signature: '' };
-const stepOf = (k) => (k === 'pledges' || k === 'signature' ? PLEDGE_STEP : STEPS.findIndex(([, f]) => f.some((x) => x[0] === k)));
+const label = (f) => (<>{f.en}{f.req ? ' *' : ''}<span className="ar" dir="rtl">{f.ar}</span></>);
 
 export default function JoinPage() {
-  const [v, setV] = useState(empty), [errs, setErrs] = useState({}), [step, setStep] = useState(0), [state, setState] = useState('idle'), [msg, setMsg] = useState('');
-  const set = (k) => (e) => setV({ ...v, [k]: e.target.value });
-  const fields = step < PLEDGE_STEP ? STEPS[step][1] : [];
+  const [step, setStep] = useState(0);
+  const [v, setV] = useState({});
+  const [errs, setErrs] = useState({});
+  const [state, setState] = useState('idle');
+  const [msg, setMsg] = useState('');
 
-  const check = () => {
+  const set = (k, val) => setV((p) => ({ ...p, [k]: val }));
+  const sec = SECTIONS[step];
+  const last = step === SECTIONS.length - 1;
+  const toForm = () => document.getElementById('apply')?.scrollIntoView();
+
+  const missing = () => {
     const e = {};
-    if (step < PLEDGE_STEP) fields.forEach(([k, , , req, min = 0]) => {
-      const s = v[k].trim();
-      if (req && !s) e[k] = 'This field is required.'; else if (s && s.length < min) e[k] = `Write at least ${min} characters.`;
+    sec.fields.forEach((f) => {
+      if (!f.req) return;
+      if (f.t === 'check' ? v[f.k] !== true : !String(v[f.k] || '').trim()) e[f.k] = 'This field is required.';
     });
-    else {
-      if (!v.pledges.every(Boolean)) e.pledges = 'You must accept every commitment.';
-      if (!v.signature.trim()) e.signature = 'Type your full name to sign.';
-    }
-    if (v.orgMember === 'yes') e.orgMember = 'Members of political parties, unions or student organizations cannot join (Art. 7).';
-    if (v.firstDept && v.firstDept === v.secondDept) e.secondDept = 'Choose a different second department.';
-    setErrs(e); return !Object.keys(e).length;
+    if (v.dept1 && v.dept1 === v.dept2) e.dept2 = 'Choose a different second department.';
+    if (last && String(v.signature || '').trim().toLowerCase() !== String(v.fullName || '').trim().toLowerCase()) e.signature = 'Type your full name exactly as entered in section 1.';
+    return e;
   };
+
   const submit = async (ev) => {
     ev.preventDefault();
-    if (!check()) return;
-    if (step < PLEDGE_STEP) { setStep(step + 1); scrollTo(0, document.getElementById('apply').offsetTop - 80); return; }
+    const e = missing();
+    setErrs(e);
+    if (Object.keys(e).length) return;
+    if (!last) { setStep(step + 1); toForm(); return; }
     setState('sending'); setMsg('');
-    try { await postRegistration(v); setState('ok'); }
+    try { await postApplication(v); setState('ok'); window.scrollTo(0, 0); }
     catch (err) {
-      setState('error'); setErrs(err.errors || {});
-      const first = Object.keys(err.errors || {})[0];
-      if (first) setStep(stepOf(first));
+      const er = err.errors || {};
+      setErrs(er); setState('error');
+      const i = SECTIONS.findIndex((s) => s.fields.some((f) => er[f.k]));
+      if (i >= 0) setStep(i);
       setMsg(err.errors ? err.message : 'Unable to send your application. Check your connection and try again.');
     }
   };
-  const Err = ({ k }) => (errs[k] ? <small id={`${k}-e`} className="err">{errs[k]}</small> : null);
 
-  if (state === 'ok') return <section className="section page"><div className="wrap"><div className="card" role="status"><h2>Registration successful.</h2><p>Welcome to Quanta Multidisciplinaire. Our HR department will review your application and contact you about the next assessment step.</p><Link className="btn" to="/">Back to home</Link></div></div></section>;
+  if (state === 'ok') return (
+    <section className="section page"><div className="wrap"><div className="card" role="status">
+      <h2>Registration successful.</h2>
+      <p>Welcome to Quanta Multidisciplinaire. Our HR department will review your application and contact you about the next assessment step.</p>
+      <Link className="btn" to="/">Back to home</Link>
+    </div></div></section>
+  );
 
   return (
     <section className="section page"><div className="wrap">
@@ -80,34 +66,59 @@ export default function JoinPage() {
       <div className="grid three">{DEPARTMENTS.map((d) => <article key={d.id} className="card"><h3>{d.name}</h3><p>{d.def}</p></article>)}</div>
 
       <h2 id="apply" className="gap">Application</h2>
-      <ol className="steps" aria-label="Progress">{[...STEPS.map((s) => s[0]), 'Rules & pledge'].map((n, i) => <li key={n} aria-current={i === step ? 'step' : undefined} className={i < step ? 'done' : ''}>{n}</li>)}</ol>
-
-      <form className="card form" onSubmit={submit} noValidate>
-        {fields.map(([k, label, type, req, , opts]) => (
-          <label key={k} className={type === 'textarea' || type === 'select' && k === 'orgMember' ? 'full' : ''}>{label}
-            {type === 'textarea' ? <textarea rows="4" value={v[k]} onChange={set(k)} required={!!req} aria-invalid={!!errs[k]} />
-              : type === 'select' ? <select value={v[k]} onChange={set(k)} aria-invalid={!!errs[k]}><option value="">Select...</option>{opts.map(([id, n]) => <option key={id} value={id}>{n}</option>)}</select>
-              : <input type={type} value={v[k]} onChange={set(k)} required={!!req} aria-invalid={!!errs[k]} aria-describedby={errs[k] ? `${k}-e` : undefined} />}
-            <Err k={k} />
-          </label>
+      <ol className="steps" aria-label="Progress">
+        {SECTIONS.map((s, i) => (
+          <li key={s.title} aria-current={i === step ? 'step' : undefined} className={i < step ? 'done' : ''}>{i + 1}. {s.title}</li>
         ))}
-        {step === 1 && [v.firstDept, v.secondDept].filter(Boolean).map((id, i) => {
-          const d = DEPARTMENTS.find((x) => x.id === id);
-          return d && <p key={i} className="full dept-note"><b>{i ? 'Second choice' : 'First choice'}: {d.name}.</b> {d.def}</p>;
-        })}
-        {step === PLEDGE_STEP && <>
-          <fieldset className="full checks"><legend>Pledge of Compliance (Art. 8)</legend>
-            {PLEDGES.map((p, i) => <label key={i} className="check"><input type="checkbox" checked={v.pledges[i]} onChange={() => setV({ ...v, pledges: v.pledges.map((x, j) => (j === i ? !x : x)) })} /> <span>{p}</span></label>)}
-            <Err k="pledges" />
-          </fieldset>
-          <label className="full">Electronic signature: type your full name exactly as entered in step 1
-            <input value={v.signature} onChange={set('signature')} aria-invalid={!!errs.signature} /><Err k="signature" />
-          </label>
-        </>}
-        {msg && <p role="alert" className="err full">{msg}</p>}
-        <div className="full nav-btns">
-          {step > 0 && <button type="button" className="btn ghost" onClick={() => { setErrs({}); setStep(step - 1); }}>Back</button>}
-          <button className="btn" disabled={state === 'sending'}>{step < PLEDGE_STEP ? 'Next' : state === 'sending' ? 'Sending...' : 'Submit application'}</button>
+      </ol>
+
+      <form className="card" onSubmit={submit} noValidate>
+        {sec.fields.map((f) => (
+          <div className="field" key={f.k}>
+            {f.t === 'check' ? (
+              <label className="check">
+                <input type="checkbox" checked={v[f.k] === true} onChange={(e) => set(f.k, e.target.checked)} />
+                <span>{label(f)}</span>
+              </label>
+            ) : (
+              <>
+                <label htmlFor={f.k}>{label(f)}</label>
+                {f.hint && <p className="muted">{f.hint}</p>}
+                {f.t === 'text' && <input id={f.k} type={f.type || 'text'} value={v[f.k] || ''} onChange={(e) => set(f.k, e.target.value)} aria-invalid={!!errs[f.k]} />}
+                {f.t === 'long' && <textarea id={f.k} rows={5} value={v[f.k] || ''} onChange={(e) => set(f.k, e.target.value)} aria-invalid={!!errs[f.k]} />}
+                {(f.t === 'select' || f.t === 'level') && (
+                  <select id={f.k} value={v[f.k] || ''} onChange={(e) => set(f.k, e.target.value)} aria-invalid={!!errs[f.k]}>
+                    <option value="">{f.t === 'level' ? 'Select level (optional)' : 'Choose...'}</option>
+                    {f.opts.map(([val, text]) => <option key={val} value={val}>{text}</option>)}
+                  </select>
+                )}
+                {f.t === 'choice' && (
+                  <div className="opts">
+                    {f.opts.map(([val, text]) => (
+                      <label className="check" key={val}>
+                        <input type="radio" name={f.k} checked={v[f.k] === val} onChange={() => set(f.k, val)} />
+                        <span>{text}</span>
+                      </label>
+                    ))}
+                    {v[f.k] === 'D' && <textarea rows={3} placeholder="Describe your action" value={v[`${f.k}_custom`] || ''} onChange={(e) => set(`${f.k}_custom`, e.target.value)} />}
+                  </div>
+                )}
+                {(f.k === 'dept1' || f.k === 'dept2') && (() => {
+                  const d = DEPARTMENTS.find((x) => x.id === v[f.k]);
+                  return d ? <p className="dept-note"><b>{d.name}.</b> {d.def}</p> : null;
+                })()}
+              </>
+            )}
+            {errs[f.k] && <p className="err" role="alert">{errs[f.k]}</p>}
+          </div>
+        ))}
+
+        {msg && <p role="alert" className="err">{msg}</p>}
+        <div className="nav-btns">
+          {step > 0 && <button type="button" className="btn ghost" onClick={() => { setErrs({}); setStep(step - 1); toForm(); }}>Back</button>}
+          <button className="btn" disabled={state === 'sending'}>
+            {!last ? 'Next' : state === 'sending' ? 'Sending...' : 'Submit application'}
+          </button>
         </div>
       </form>
     </div></section>
