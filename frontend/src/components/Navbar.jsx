@@ -6,10 +6,11 @@ import { useSoundEffects } from '../hooks/useSoundEffects.js';
 
 const NAV_LINKS = [
   { id: 'about', label: 'About', labelAr: 'عن النادي' },
-  { id: 'departments', label: 'Departments & Teams', labelAr: 'الأقسام والفرق' },
+  { id: 'quantum-story', label: 'Frontiers', labelAr: 'الآفاق العلمية' },
+  { id: 'departments', label: 'Departments', labelAr: 'الأقسام والفرق' },
   { id: 'events', label: 'Events', labelAr: 'الفعاليات' },
   { id: 'activities', label: 'Activities', labelAr: 'الأنشطة' },
-  { id: 'team', label: 'Executive Board', labelAr: 'الهيئة التنفيذية' },
+  { id: 'team', label: 'Board', labelAr: 'الهيئة التنفيذية' },
   { id: 'contact', label: 'Contact', labelAr: 'اتصل بنا' },
 ];
 

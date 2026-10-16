@@ -33,8 +33,8 @@ export default function ActivitiesSection() {
             className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/70 border border-white/10 hover:border-cyan-500/40 group text-left flex flex-col justify-between transition-all duration-200"
           >
             <div className="space-y-2.5">
-              <div className="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 flex items-center justify-center group-hover:scale-105 group-hover:bg-cyan-500/25 transition-all">
-                <DynamicIcon name={act.icon} className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="w-11 h-11 rounded-2xl bg-slate-900/90 border border-cyan-500/25 text-cyan-300 flex items-center justify-center p-1.5 shadow-[0_0_12px_rgba(6,182,212,0.15)] group-hover:scale-110 group-hover:border-cyan-400/50 transition-all duration-300">
+                <DynamicIcon name={act.icon} className="w-6 h-6" />
               </div>
 
               <div>

@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: #050811;
     color: #f1f5f9;
@@ -16,6 +20,23 @@
 }
 
 /* Custom Keyframes for Creative Quantum Animations */
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinSlowReverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 24s linear infinite;
+}
+
+.animate-spin-slow-reverse {
+  animation: spinSlowReverse 20s linear infinite;
+}
 @keyframes floatSlow {
   0%, 100% {
     transform: translateY(0px) rotate(0deg);

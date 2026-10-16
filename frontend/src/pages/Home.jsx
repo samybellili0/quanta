@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import HeroSection from '../sections/HeroSection.jsx';
 import AboutSection from '../sections/AboutSection.jsx';
+import QuantumScrollytelling from '../sections/QuantumScrollytelling.jsx';
 import DepartmentsAndTeams from '../sections/DepartmentsAndTeams.jsx';
 import EventsSection from '../sections/EventsSection.jsx';
 import ActivitiesSection from '../sections/ActivitiesSection.jsx';
@@ -27,6 +28,7 @@ export default function Home() {
     <>
       <HeroSection />
       <AboutSection />
+      <QuantumScrollytelling />
       <DepartmentsAndTeams />
       <EventsSection />
       <ActivitiesSection />

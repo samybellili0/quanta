@@ -53,9 +53,19 @@ export default function StarfieldCanvas() {
       }
     };
 
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      scrollVelocity = (currentY - lastScrollY) * 0.18;
+      lastScrollY = currentY;
+    };
+
     window.addEventListener('resize', handleResize);
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('click', handleClick, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     const numStars = Math.min(190, Math.floor((width * height) / 8500) + 75);
 
@@ -160,9 +170,11 @@ export default function StarfieldCanvas() {
       // 3. Stars + Quantum Constellation Connections
       const nodes = [];
 
+      scrollVelocity *= 0.92;
+
       for (const star of stars) {
         star.x += star.vx;
-        star.y += star.vy;
+        star.y += star.vy - scrollVelocity * star.z * 1.4;
 
         if (star.x < 0) star.x = width;
         if (star.x > width) star.x = 0;
@@ -181,9 +193,20 @@ export default function StarfieldCanvas() {
 
         ctx.fillStyle = star.color;
         ctx.globalAlpha = currentAlpha;
-        ctx.beginPath();
-        ctx.arc(sx, sy, star.size, 0, Math.PI * 2);
-        ctx.fill();
+
+        if (Math.abs(scrollVelocity) > 0.35) {
+          const streakLen = Math.min(20, Math.abs(scrollVelocity) * 2.2 * star.z);
+          ctx.lineWidth = Math.max(0.8, star.size * 0.85);
+          ctx.strokeStyle = star.color;
+          ctx.beginPath();
+          ctx.moveTo(sx, sy);
+          ctx.lineTo(sx, sy + (scrollVelocity > 0 ? -streakLen : streakLen));
+          ctx.stroke();
+        } else {
+          ctx.beginPath();
+          ctx.arc(sx, sy, star.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
 
         if (star.isNode) {
           ctx.beginPath();
@@ -308,6 +331,7 @@ export default function StarfieldCanvas() {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('click', handleClick);
+      window.removeEventListener('scroll', handleScroll);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

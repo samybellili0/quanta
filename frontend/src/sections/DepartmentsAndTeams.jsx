@@ -78,11 +78,11 @@ export default function DepartmentsAndTeams() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div
-                      className={`w-10 h-10 rounded-xl bg-gradient-to-br ${dept.accentColor} border ${dept.borderColor} flex items-center justify-center ${dept.textColor}`}
+                      className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${dept.accentColor} border ${dept.borderColor} flex items-center justify-center ${dept.textColor} p-2 shadow-lg group-hover:scale-105 transition-transform`}
                     >
-                      <DynamicIcon name={dept.icon} className="w-5 h-5" />
+                      <DynamicIcon name={dept.icon} className="w-7 h-7" />
                     </div>
-                    <span className="text-[10px] font-mono text-slate-400">
+                    <span className="text-[10px] font-mono text-slate-400 bg-slate-900/80 px-2.5 py-1 rounded-lg border border-white/5">
                       Lead: <strong className="text-white">{dept.manager}</strong>
                     </span>
                   </div>
@@ -126,9 +126,9 @@ export default function DepartmentsAndTeams() {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div
-                      className={`w-10 h-10 rounded-xl bg-gradient-to-br ${team.accent} border ${team.border} flex items-center justify-center ${team.text}`}
+                      className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${team.accent} border ${team.border} flex items-center justify-center ${team.text} p-2 shadow-lg group-hover:scale-105 transition-transform`}
                     >
-                      <DynamicIcon name={team.icon} className="w-5 h-5" />
+                      <DynamicIcon name={team.icon} className="w-7 h-7" />
                     </div>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-300">
                       Research Team
