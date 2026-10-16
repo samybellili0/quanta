@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import SmoothScrollProvider from './components/SmoothScrollProvider.jsx';
-import ScrollProgressHud from './components/ScrollProgressHud.jsx';
 import StarfieldCanvas from './components/StarfieldCanvas.jsx';
 import Navbar from './components/Navbar.jsx';
 import Home from './pages/Home.jsx';
@@ -13,9 +12,6 @@ export default function App() {
   return (
     <SmoothScrollProvider>
       <div className="relative min-h-screen bg-[#050811] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
-        {/* Top Laser Progress & Floating Telemetry HUD */}
-        <ScrollProgressHud />
-
         {/* Interactive Quantum Starfield Canvas */}
         <StarfieldCanvas />
 

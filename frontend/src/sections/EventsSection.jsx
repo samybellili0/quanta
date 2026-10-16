@@ -1,234 +1,252 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { EVENTS } from '../data/club.js';
+import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { getEvents } from '../services/api.js';
+import useFetch from '../hooks/useFetch.js';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
-  Calendar,
-  MapPin,
-  Clock,
-  Sparkles,
-  ArrowRight,
-  X,
-  CheckCircle2,
-} from 'lucide-react';
+  AtomOrbitalSvg,
+  DeepSpaceTelescopeSvg,
+  CyberShieldSvg,
+  NeuralAiSvg,
+} from '../components/OriginalIcons.jsx';
 import { useSoundEffects } from '../hooks/useSoundEffects.js';
 
-const CATEGORIES = ['All', 'Astronomy', 'Competition', 'STEM', 'Community'];
+export const fmtDate = (d) =>
+  new Date(d).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 
-export default function EventsSection() {
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [activeModalEvent, setActiveModalEvent] = useState(null);
-  const { playClick, playQuantumChime } = useSoundEffects();
+export function EventImage({ src, alt = '', category = '' }) {
+  const [failed, setFailed] = useState(!src);
 
-  const filteredEvents =
-    selectedCategory === 'All'
-      ? EVENTS
-      : EVENTS.filter((e) => e.category === selectedCategory);
+  const cat = (category || '').toLowerCase();
+  const FallbackSvg = cat.includes('astro')
+    ? DeepSpaceTelescopeSvg
+    : cat.includes('comp')
+    ? CyberShieldSvg
+    : cat.includes('stem')
+    ? NeuralAiSvg
+    : AtomOrbitalSvg;
 
-  const openEventModal = (event) => {
-    playQuantumChime(783.99, 0.2);
-    setActiveModalEvent(event);
-  };
+  return (
+    <div className="h-36 sm:h-40 w-full overflow-hidden bg-gradient-to-br from-[#0c1938] via-[#070f24] to-[#03060f] relative flex items-center justify-center border-b border-sky-400/15">
+      {!failed && src ? (
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-2 opacity-80 group-hover:scale-110 transition-transform duration-500">
+          <FallbackSvg size={50} animate={true} />
+        </div>
+      )}
+    </div>
+  );
+}
 
-  const closeEventModal = () => {
-    playClick();
-    setActiveModalEvent(null);
+function EventCard({ e }) {
+  const cardRef = useRef(null);
+
+  const handleMouseMove = (ev) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    el.style.setProperty('--mouse-x', `${ev.clientX - rect.left}px`);
+    el.style.setProperty('--mouse-y', `${ev.clientY - rect.top}px`);
   };
 
   return (
-    <section id="events" className="py-14 sm:py-20 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
-      <div className="text-center space-y-2 mb-8">
-        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-500/30 text-cyan-300 text-xs font-mono font-bold">
-          <Calendar className="w-3.5 h-3.5 text-cyan-400" />
-          <span>MAJOR EVENTS</span>
-        </div>
+    <article
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      className="quantum-card rounded-lg border border-sky-400/20 hover:border-cyan-400/60 transition-all duration-300 overflow-hidden flex flex-col w-[290px] sm:w-[325px] shrink-0 group hover:-translate-y-1.5"
+    >
+      <EventImage src={e.image} alt={e.title} category={e.category} />
 
-        <h2 className="font-display font-black text-2xl sm:text-4xl text-white tracking-tight">
-          Pioneering Scientific Milestones
-        </h2>
+      <div className="p-4 flex-1 flex flex-col items-start text-left gap-1.5">
+        <span className="px-2.5 py-0.5 rounded-md border border-cyan-400/50 text-cyan-300 text-xs font-medium">
+          {e.category}
+        </span>
 
-        <p className="text-slate-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
-          From 24-hour CTF cybersecurity challenges to national astronomy camps at Sidi Fredj.
+        <h3 className="font-display font-bold text-base sm:text-lg text-white group-hover:text-cyan-300 transition-colors line-clamp-1 leading-snug">
+          {e.title}
+        </h3>
+
+        <p className="text-xs text-slate-400 leading-relaxed">
+          {fmtDate(e.date)} · {e.location}
         </p>
 
-        {/* Category Filter Pills */}
-        <div className="flex flex-wrap justify-center gap-1.5 pt-2">
-          {CATEGORIES.map((cat) => (
+        <p className="text-xs text-slate-300/85 line-clamp-2 leading-relaxed mb-2">
+          {e.description}
+        </p>
+
+        <Link
+          to={`/events/${e.id}`}
+          className="mt-auto px-3.5 py-1.5 rounded-md bg-transparent hover:bg-cyan-400/15 text-cyan-400 border border-cyan-400/60 hover:border-cyan-400 text-xs font-semibold transition-all"
+        >
+          Learn More
+        </Link>
+      </div>
+    </article>
+  );
+}
+
+export default function EventsSection() {
+  const { data, loading, error } = useFetch(getEvents);
+  const sectionRef = useRef(null);
+  const mobileRowRef = useRef(null);
+  const { playClick } = useSoundEffects();
+
+  // Vertical-to-Horizontal Scroll Mapping for Desktop
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 90,
+    damping: 24,
+    restDelta: 0.001,
+  });
+
+  const xTranslate = useTransform(smoothProgress, [0, 1], ['0%', '-62%']);
+
+  const scrollDesktopByStep = (dir) => {
+    playClick();
+    window.scrollBy({
+      top: dir * window.innerHeight * 0.38,
+      behavior: 'smooth',
+    });
+  };
+
+  const scrollMobileByStep = (dir) => {
+    playClick();
+    if (mobileRowRef.current) {
+      mobileRowRef.current.scrollBy({
+        left: dir * 320,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  return (
+    <section id="events" ref={sectionRef} className="relative lg:h-[240vh]">
+      {/* Desktop Sticky Horizontal Scroll-Driven Viewport */}
+      <div className="hidden lg:flex sticky top-16 h-[calc(100vh-4rem)] flex-col justify-center overflow-hidden py-10">
+        <div className="max-w-6xl w-full mx-auto px-6 mb-6 flex items-end justify-between">
+          <div>
+            <h2 className="font-display font-bold text-3xl sm:text-4xl text-white">
+              Major events
+            </h2>
+            <p className="text-sm text-slate-400 mt-1">
+              Scroll down or use the arrows to explore our events horizontally.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Horizontal Scroll Progress Bar */}
+            <div className="w-32 h-1.5 bg-slate-900 rounded-sm overflow-hidden border border-sky-400/20">
+              <motion.div
+                style={{ scaleX: smoothProgress }}
+                className="h-full bg-cyan-400 origin-left"
+              />
+            </div>
+
             <button
-              key={cat}
-              onClick={() => {
-                playClick();
-                setSelectedCategory(cat);
-              }}
-              className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
-                selectedCategory === cat
-                  ? 'bg-cyan-500 text-slate-950 shadow-[0_0_12px_rgba(6,182,212,0.4)]'
-                  : 'bg-slate-950/80 text-slate-400 hover:text-white border border-white/5'
-              }`}
+              aria-label="Previous events"
+              onClick={() => scrollDesktopByStep(-1)}
+              className="w-9 h-9 rounded-md border border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/15 flex items-center justify-center transition-colors"
             >
-              {cat === 'All' ? 'All Events' : cat}
+              <ChevronLeft className="w-4 h-4" />
             </button>
+            <button
+              aria-label="Next events"
+              onClick={() => scrollDesktopByStep(1)}
+              className="w-9 h-9 rounded-md border border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/15 flex items-center justify-center transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {loading && (
+          <p role="status" className="max-w-6xl mx-auto px-6 text-slate-400">
+            Loading events...
+          </p>
+        )}
+        {error && (
+          <p role="alert" className="max-w-6xl mx-auto px-6 text-red-400">
+            Unable to load events. Please try again later.
+          </p>
+        )}
+
+        <div className="w-full overflow-hidden pl-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))]">
+          <motion.div
+            style={{ x: xTranslate }}
+            className="flex gap-5 pr-24 py-3 w-max"
+          >
+            {data?.map((e) => (
+              <EventCard key={e.id} e={e} />
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Mobile & Tablet Horizontal Touch Scroll Gallery */}
+      <div className="lg:hidden py-12 px-4 sm:px-6 max-w-6xl mx-auto">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-white">
+            Major events
+          </h2>
+          <div className="flex gap-2">
+            <button
+              aria-label="Previous events"
+              onClick={() => scrollMobileByStep(-1)}
+              className="w-8 h-8 rounded-md border border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/15 flex items-center justify-center"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              aria-label="Next events"
+              onClick={() => scrollMobileByStep(1)}
+              className="w-8 h-8 rounded-md border border-cyan-400/50 text-cyan-300 hover:bg-cyan-400/15 flex items-center justify-center"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {loading && (
+          <p role="status" className="text-slate-400 text-sm">
+            Loading events...
+          </p>
+        )}
+        {error && (
+          <p role="alert" className="text-red-400 text-sm">
+            Unable to load events. Please try again later.
+          </p>
+        )}
+
+        <div
+          ref={mobileRowRef}
+          tabIndex={0}
+          aria-label="Events"
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 pt-1 scrollbar-none"
+          style={{ scrollbarWidth: 'none' }}
+        >
+          {data?.map((e) => (
+            <div key={e.id} className="snap-start shrink-0">
+              <EventCard e={e} />
+            </div>
           ))}
         </div>
       </div>
-
-      {/* Events Grid (Compact, Solid) */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredEvents.map((evt, idx) => (
-          <motion.div
-            key={evt.id}
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.05, duration: 0.35 }}
-            className="rounded-2xl overflow-hidden bg-slate-950/70 border border-white/10 hover:border-cyan-500/40 group flex flex-col justify-between transition-all duration-200"
-          >
-            <div>
-              <div className="relative h-40 w-full overflow-hidden bg-slate-900">
-                {evt.image ? (
-                  <img
-                    src={evt.image}
-                    alt={evt.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-slate-900 to-cyan-950 flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-cyan-400/30" />
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80" />
-
-                <div className="absolute top-2.5 left-2.5">
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-slate-950/90 border border-cyan-400/30 text-cyan-300">
-                    {evt.category}
-                  </span>
-                </div>
-
-                <div className="absolute bottom-2 left-2.5 right-2.5 text-[11px] text-slate-300 flex items-center justify-between font-mono">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3 text-cyan-400" />
-                    <span>{evt.date}</span>
-                  </span>
-                  <span className="flex items-center gap-1 truncate max-w-[140px]">
-                    <MapPin className="w-3 h-3 text-cyan-400 shrink-0" />
-                    <span className="truncate">{evt.location}</span>
-                  </span>
-                </div>
-              </div>
-
-              <div className="p-4 space-y-2 text-left">
-                <h3 className="font-display font-bold text-base text-white group-hover:text-cyan-300 transition-colors line-clamp-1">
-                  {evt.title}
-                </h3>
-
-                <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
-                  {evt.description}
-                </p>
-              </div>
-            </div>
-
-            <div className="p-4 pt-0">
-              <button
-                onClick={() => openEventModal(evt)}
-                className="w-full py-2 rounded-xl bg-slate-900 hover:bg-cyan-500/15 border border-white/10 hover:border-cyan-400/40 text-xs font-bold text-slate-200 hover:text-cyan-300 flex items-center justify-center gap-1.5 transition-all"
-              >
-                <span>Event Dossier</span>
-                <ArrowRight className="w-3 h-3" />
-              </button>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Interactive Event Dossier Modal */}
-      <AnimatePresence>
-        {activeModalEvent && (
-          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="quantum-card max-w-xl w-full rounded-2xl border border-cyan-500/40 relative overflow-hidden my-6 text-left shadow-2xl"
-            >
-              <button
-                onClick={closeEventModal}
-                className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-slate-950/80 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
-              >
-                <X className="w-4 h-4" />
-              </button>
-
-              {activeModalEvent.image && (
-                <div className="relative h-48 sm:h-56 w-full bg-slate-950">
-                  <img
-                    src={activeModalEvent.image}
-                    alt={activeModalEvent.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0e1830] via-transparent to-black/30" />
-                </div>
-              )}
-
-              <div className="p-5 sm:p-6 space-y-4">
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-cyan-500/20 text-cyan-300">
-                    {activeModalEvent.category}
-                  </span>
-                  <span className="text-[11px] font-mono text-slate-400">
-                    {activeModalEvent.date} • {activeModalEvent.location}
-                  </span>
-                </div>
-
-                <div>
-                  <h3 className="font-display font-black text-lg sm:text-xl text-white">
-                    {activeModalEvent.title}
-                  </h3>
-                  {activeModalEvent.titleAr && (
-                    <p className="text-xs font-mono text-cyan-400/90 mt-0.5">
-                      {activeModalEvent.titleAr}
-                    </p>
-                  )}
-                </div>
-
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  {activeModalEvent.description}
-                </p>
-
-                {activeModalEvent.highlights && (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {activeModalEvent.highlights.map((h) => (
-                      <span
-                        key={h}
-                        className="px-2 py-0.5 rounded bg-slate-950 border border-white/5 text-[11px] text-slate-300 font-mono"
-                      >
-                        ✓ {h}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <div className="pt-2 flex items-center justify-end gap-2 border-t border-white/10">
-                  <button
-                    onClick={closeEventModal}
-                    className="px-4 py-2 rounded-xl bg-slate-800 text-xs font-bold text-slate-300 hover:text-white"
-                  >
-                    Close
-                  </button>
-                  <a
-                    href="/join"
-                    className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold"
-                  >
-                    Join Quanta
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }
