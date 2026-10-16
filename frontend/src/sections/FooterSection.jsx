@@ -100,11 +100,6 @@ export default function FooterSection() {
                   Executive Board 2026–2027
                 </a>
               </li>
-              <li>
-                <a href="/#rules" className="hover:text-cyan-300 transition-colors">
-                  Internal Law & Statutes
-                </a>
-              </li>
             </ul>
           </div>
 

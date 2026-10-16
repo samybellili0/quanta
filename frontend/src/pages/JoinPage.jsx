@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { DEPARTMENTS, RULES, PLEDGES, SCIENTIFIC_TEAMS } from '../data/club.js';
+import { DEPARTMENTS, SCIENTIFIC_TEAMS } from '../data/club.js';
 import DynamicIcon from '../components/DynamicIcon.jsx';
 import {
   Rocket,
   ArrowRight,
-  ShieldCheck,
   CheckCircle2,
   HelpCircle,
   Sparkles,
   ChevronDown,
   Layers,
-  Scale,
   ExternalLink,
 } from 'lucide-react';
 import { useSoundEffects } from '../hooks/useSoundEffects.js';
@@ -60,8 +58,8 @@ export default function JoinPage() {
         </h1>
 
         <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-          Membership is selective. Review the 6 executive departments, the 5 research teams,
-          and the Internal Law statutes below before launching the application assessment.
+          Membership is selective. Review the 6 executive departments, the 5 scientific teams,
+          and the 3-step admission process below before launching the application assessment.
         </p>
 
         {/* Primary Launch CTA */}
@@ -167,37 +165,6 @@ export default function JoinPage() {
           ))}
         </div>
       </div>
-
-      {/* Rules & Pledges */}
-      <div className="space-y-6">
-        <div>
-          <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
-            COMPLIANCE & ETHICS
-          </span>
-          <h2 className="font-display font-black text-2xl sm:text-3xl text-white mt-1">
-            Membership Rules & Code of Honor
-          </h2>
-        </div>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {RULES.map((rule) => (
-            <div
-              key={rule.art}
-              className="quantum-subcard p-5 rounded-2xl border border-white/10 space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-500/15 text-cyan-300">
-                  {rule.art}
-                </span>
-                <ShieldCheck className="w-4 h-4 text-cyan-400/60" />
-              </div>
-              <h4 className="font-display font-bold text-sm text-white">{rule.title}</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">{rule.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* FAQ Accordion */}
       <div className="space-y-6">
         <div>

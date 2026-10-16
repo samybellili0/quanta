@@ -10,7 +10,6 @@ const NAV_LINKS = [
   { id: 'events', label: 'Events', labelAr: 'الفعاليات' },
   { id: 'activities', label: 'Activities', labelAr: 'الأنشطة' },
   { id: 'team', label: 'Executive Board', labelAr: 'الهيئة التنفيذية' },
-  { id: 'rules', label: 'Internal Law', labelAr: 'القانون الداخلي' },
   { id: 'contact', label: 'Contact', labelAr: 'اتصل بنا' },
 ];
 

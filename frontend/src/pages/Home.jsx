@@ -6,7 +6,6 @@ import DepartmentsAndTeams from '../sections/DepartmentsAndTeams.jsx';
 import EventsSection from '../sections/EventsSection.jsx';
 import ActivitiesSection from '../sections/ActivitiesSection.jsx';
 import TeamSection from '../sections/TeamSection.jsx';
-import InternalLawSection from '../sections/InternalLawSection.jsx';
 import JoinBanner from '../sections/JoinBanner.jsx';
 
 export default function Home() {
@@ -32,7 +31,6 @@ export default function Home() {
       <EventsSection />
       <ActivitiesSection />
       <TeamSection />
-      <InternalLawSection />
       <JoinBanner />
     </>
   );
