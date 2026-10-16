@@ -14,11 +14,10 @@ import { useSoundEffects } from '../hooks/useSoundEffects.js';
 const FORM_URL = 'https://quanta-registrations.web.app/';
 const DEPT_SVGS = [
   AtomOrbitalSvg,
-  CircuitChipSvg,
   SynapseNetworkSvg,
   DeepSpaceTelescopeSvg,
-  MaterialsCrystalSvg,
   HolographicMediaSvg,
+  CircuitChipSvg,
 ];
 
 export default function JoinPage() {
@@ -46,16 +45,16 @@ export default function JoinPage() {
           transition={{ duration: 0.5, delay: 0.08 }}
           className="text-slate-300/85 text-base sm:text-lg max-w-2xl leading-relaxed"
         >
-          Joining is selective. Discover our six departments first, then complete the application. New members start as trainees for 4 months before they can become Official Members.
+          Joining is selective. Discover our departments first, then complete the application. New members start as trainees for 4 months before they can become Official Members.
         </motion.p>
       </div>
 
       <div className="flex items-end justify-between mb-8">
         <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight">
-          Our six departments
+          Our departments
         </h2>
         <span className="font-mono text-xs text-cyan-400/80 tracking-widest">
-          06 DEPARTMENTS
+          0{DEPARTMENTS.length} DEPARTMENTS
         </span>
       </div>
 

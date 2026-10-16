@@ -111,7 +111,7 @@ export default function JoinBanner() {
               Join Quanta
             </h2>
             <p className="mt-3 sm:mt-4 text-slate-300/85 text-sm sm:text-lg leading-relaxed max-w-xl">
-              Membership starts with a 4-month probation. Discover our six departments, then apply.
+              Membership starts with a 4-month probation. Discover our departments, then apply.
             </p>
           </div>
 

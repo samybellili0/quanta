@@ -14,7 +14,7 @@ import { useSoundEffects } from '../hooks/useSoundEffects.js';
 
 // Matched 1:1 to TEAM roles in club.js:
 // 0: President, 1: Vice President, 2: Secretary General, 3: HR Manager,
-// 4: IT Manager, 5: External Relations, 6: Logistic & Finance, 7: Event Manager, 8: Media & Marketing
+// 4: IT Manager, 5: External Relations, 6: Event Manager, 7: Media & Marketing
 const ROLE_SVGS = [
   AtomOrbitalSvg,
   SynapseNetworkSvg,
@@ -22,7 +22,6 @@ const ROLE_SVGS = [
   SynapseNetworkSvg,
   CircuitChipSvg,
   DeepSpaceTelescopeSvg,
-  MaterialsCrystalSvg,
   AtomOrbitalSvg,
   HolographicMediaSvg,
 ];

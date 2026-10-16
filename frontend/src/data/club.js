@@ -37,7 +37,6 @@ export const TEAM = [
   ['Kaouther Benkacir', 'Human Resources & Internal Development Manager', ''],
   ['Bellili Samy', 'IT Manager', ''],
   ['Dahmani Imene', 'External Relations Manager', ''],
-  ['Nour El Islam Ben Kouider', 'Logistic & Finance Manager', ''],
   ['Safa Benouaret', 'Event Manager', ''],
   ['Lyna Larbi', 'Media And Marketing', ''],
 ];
@@ -67,11 +66,6 @@ export const DEPARTMENTS = [
     id: 'it',
     name: 'Technical Solutions & IT',
     def: 'Supports hackathons and technical competitions, builds and maintains the website, membership database and automation tools.',
-  },
-  {
-    id: 'finance',
-    name: 'Logistics & Finance',
-    def: 'Manages budgets and invoices, books halls, keeps the numbered equipment inventory and issues temporary custody receipts.',
   },
 ];
 
