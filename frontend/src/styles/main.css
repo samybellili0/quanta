@@ -96,3 +96,30 @@ input[aria-invalid=true],textarea[aria-invalid=true],select[aria-invalid=true]{b
 .field [aria-invalid=true]{border-color:#f87171}
 .opts{display:grid;gap:10px}
 .err{color:#f87171;font-size:.85rem;margin:0}
+
+/* ---------- Compact boxes on phones ---------- */
+@media (max-width: 640px) {
+  .section { padding: 44px 0; }
+  h2 { margin-bottom: 8px; }
+  .intro { margin-bottom: 16px; }
+
+  /* two columns for domains, activities and team (the join page stays single-column) */
+  #domains .three,
+  #activities .four,
+  #team .three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid { gap: 10px; margin-top: 16px; }
+
+  .card { padding: 14px; border-radius: 12px; }
+  .card h3 { font-size: 1rem; line-height: 1.25; margin-bottom: 4px; }
+  .card p { font-size: 0.85rem; line-height: 1.4; }
+
+  .ico { width: 34px; height: 34px; margin-bottom: 6px; font-size: 0.9rem; }
+  .small { padding: 12px 8px; font-size: 0.85rem; line-height: 1.3; }
+  .stats strong { font-size: 1.8rem; }
+  .avatar { width: 56px; height: 56px; margin-bottom: 8px; }
+
+  /* no jumping on touch */
+  .hover:hover { transform: none; }
+}
