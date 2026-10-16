@@ -1,78 +1,122 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { DEPARTMENTS } from '../data/club.js';
-import SpotlightCard from '../components/SpotlightCard.jsx';
+import {
+  AtomOrbitalSvg,
+  CircuitChipSvg,
+  SynapseNetworkSvg,
+  DeepSpaceTelescopeSvg,
+  MaterialsCrystalSvg,
+  HolographicMediaSvg,
+} from '../components/OriginalIcons.jsx';
 import { useSoundEffects } from '../hooks/useSoundEffects.js';
 
 const FORM_URL = 'https://quanta-registrations.web.app/';
+const DEPT_SVGS = [
+  AtomOrbitalSvg,
+  CircuitChipSvg,
+  SynapseNetworkSvg,
+  DeepSpaceTelescopeSvg,
+  MaterialsCrystalSvg,
+  HolographicMediaSvg,
+];
 
 export default function JoinPage() {
-  const { playQuantumChime } = useSoundEffects();
+  const { playQuantumChime, playHoverTick } = useSoundEffects();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <section className="min-h-[80vh] pt-28 pb-16 px-4 sm:px-6 max-w-6xl mx-auto text-left">
-      <motion.h1
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="font-display font-bold text-3xl sm:text-4xl text-white mb-3"
-      >
-        Join Quanta
-      </motion.h1>
+    <section className="min-h-[85vh] pt-28 pb-20 px-4 sm:px-6 max-w-6xl mx-auto text-left">
+      <div className="border-b border-white/10 pb-10 mb-14">
+        <motion.h1
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="font-display font-bold text-4xl sm:text-6xl text-white tracking-tight mb-4"
+        >
+          Join Quanta
+        </motion.h1>
 
-      <motion.p
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.08 }}
-        className="text-slate-300/85 text-sm sm:text-base max-w-[70ch] leading-relaxed mb-10"
-      >
-        Joining is selective. Discover our six departments first, then complete the application. New members start as trainees for 4 months before they can become Official Members.
-      </motion.p>
-
-      <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-5">
-        Our six departments
-      </h2>
-
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mb-12">
-        {DEPARTMENTS.map((d, idx) => (
-          <SpotlightCard
-            key={d.id}
-            as="article"
-            delay={idx * 0.06}
-            className="p-5 sm:p-6 hover:-translate-y-1 flex flex-col items-start"
-          >
-            <h3 className="font-display font-bold text-base sm:text-lg text-white mb-2 group-hover:text-cyan-300 transition-colors">
-              {d.name}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300/85 leading-relaxed">
-              {d.def}
-            </p>
-          </SpotlightCard>
-        ))}
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.08 }}
+          className="text-slate-300/85 text-base sm:text-lg max-w-2xl leading-relaxed"
+        >
+          Joining is selective. Discover our six departments first, then complete the application. New members start as trainees for 4 months before they can become Official Members.
+        </motion.p>
       </div>
 
-      <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-4">
-        Application
-      </h2>
+      <div className="flex items-end justify-between mb-8">
+        <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight">
+          Our six departments
+        </h2>
+        <span className="font-mono text-xs text-cyan-400/80 tracking-widest">
+          06 DEPARTMENTS
+        </span>
+      </div>
 
-      <SpotlightCard className="p-6 sm:p-8 flex flex-col items-start gap-4">
-        <p className="text-sm sm:text-base text-slate-200">
-          Ready to apply? The application takes about 15 minutes.
-        </p>
+      {/* Zero-Box Architectural Department Ledger */}
+      <div className="border-t border-white/10 mb-16">
+        {DEPARTMENTS.map((d, idx) => {
+          const DeptSvg = DEPT_SVGS[idx % DEPT_SVGS.length];
+          const num = String(idx + 1).padStart(2, '0');
+
+          return (
+            <motion.article
+              key={d.id}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              onMouseEnter={() => playHoverTick()}
+              className="group py-7 sm:py-8 border-b border-white/10 hairline-sweep grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start lg:items-center"
+            >
+              <div className="lg:col-span-5 flex items-center gap-4 sm:gap-6">
+                <span className="font-display font-bold text-2xl sm:text-3xl text-stroke-cyan group-hover:text-stroke-active transition-all">
+                  {num}
+                </span>
+                <div className="transition-transform duration-500 group-hover:scale-110">
+                  <DeptSvg size={36} animate={true} />
+                </div>
+                <h3 className="font-display font-bold text-lg sm:text-xl text-white group-hover:text-cyan-300 transition-colors">
+                  {d.name}
+                </h3>
+              </div>
+
+              <p className="lg:col-span-7 text-sm sm:text-base text-slate-300/85 leading-relaxed">
+                {d.def}
+              </p>
+            </motion.article>
+          );
+        })}
+      </div>
+
+      {/* Open Application Horizon */}
+      <div className="border-y border-white/10 py-12 sm:py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+        <div>
+          <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight">
+            Application
+          </h2>
+          <p className="mt-2 text-sm sm:text-base text-slate-300">
+            Ready to apply? The application takes about 15 minutes.
+          </p>
+        </div>
+
         <a
           href={FORM_URL}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => playQuantumChime(880, 0.2)}
-          className="btn-shimmer px-6 py-2.5 rounded-lg bg-[#1d4ed8] hover:bg-blue-600 text-white border border-cyan-400 font-semibold text-sm sm:text-base transition-all duration-250 hover:-translate-y-0.5 hover:shadow-[0_0_22px_rgba(56,189,248,0.5)]"
+          className="btn-shimmer inline-flex items-center gap-3 px-7 py-3.5 rounded-md bg-[#1d4ed8] hover:bg-blue-600 text-white border border-cyan-400 font-semibold text-sm sm:text-base transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_28px_rgba(56,189,248,0.5)]"
         >
-          Open the application form
+          <span>Open the application form</span>
+          <span>↗</span>
         </a>
-      </SpotlightCard>
+      </div>
     </section>
   );
 }

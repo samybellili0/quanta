@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import SpotlightCard from '../components/SpotlightCard.jsx';
 import { SOCIALS, EMAIL } from '../data/club.js';
 import { useSoundEffects } from '../hooks/useSoundEffects.js';
 
@@ -36,7 +35,7 @@ export const SOCIAL_ICONS = {
 
 export function SocialIcons() {
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
       {SOCIALS.map(([label, url]) => (
         <a
           key={label}
@@ -44,9 +43,15 @@ export function SocialIcons() {
           target="_blank"
           rel="noreferrer"
           aria-label={label}
-          className="w-10 h-10 rounded-md border border-sky-400/25 hover:border-cyan-400 text-cyan-400 flex items-center justify-center transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_16px_rgba(56,189,248,0.4)]"
+          className="group inline-flex items-center gap-2 py-1 text-slate-300 hover:text-cyan-300 transition-colors hairline-sweep"
         >
-          {SOCIAL_ICONS[label]}
+          <span className="text-cyan-400 transition-transform duration-300 group-hover:scale-110">
+            {SOCIAL_ICONS[label]}
+          </span>
+          <span className="text-xs sm:text-sm font-medium">{label}</span>
+          <span className="text-xs text-cyan-400 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+            ↗
+          </span>
         </a>
       ))}
     </div>
@@ -58,66 +63,139 @@ export default function JoinBanner() {
 
   return (
     <>
-      {/* Join Quanta CTA Section */}
-      <section id="join" className="py-12 sm:py-16 px-4 sm:px-6 max-w-6xl mx-auto">
-        <SpotlightCard className="p-6 sm:p-8 flex flex-col items-start text-left gap-3">
-          <div className="quantum-laser-line" />
-          <h2 className="font-display font-bold text-2xl sm:text-3xl text-white">
-            Join Quanta
-          </h2>
-          <p className="text-slate-300/85 text-sm sm:text-base max-w-[68ch] leading-relaxed">
-            Membership starts with a 4-month probation. Discover our six departments, then apply.
-          </p>
+      {/* Join Quanta — Open Gravitational Portal Horizon */}
+      <section
+        id="join"
+        className="relative py-16 sm:py-24 px-4 sm:px-6 max-w-6xl mx-auto overflow-hidden"
+      >
+        <div className="relative border-y border-white/10 py-12 sm:py-20 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 sm:gap-10">
+          {/* Background Orbital Wave Geometry */}
+          <svg
+            className="absolute right-0 top-1/2 -translate-y-1/2 w-[280px] sm:w-[380px] h-[280px] sm:h-[380px] opacity-25 pointer-events-none select-none"
+            viewBox="0 0 380 380"
+            fill="none"
+          >
+            <circle
+              cx="190"
+              cy="190"
+              r="175"
+              stroke="#38bdf8"
+              strokeWidth="1"
+              strokeDasharray="6 8"
+              className="animate-spin-slow"
+              style={{ transformOrigin: '190px 190px' }}
+            />
+            <circle
+              cx="190"
+              cy="190"
+              r="130"
+              stroke="#818cf8"
+              strokeWidth="1"
+              strokeDasharray="14 10"
+              className="animate-spin-slow-reverse"
+              style={{ transformOrigin: '190px 190px' }}
+            />
+            <ellipse
+              cx="190"
+              cy="190"
+              rx="170"
+              ry="60"
+              transform="rotate(-28 190 190)"
+              stroke="#38bdf8"
+              strokeWidth="1.2"
+            />
+          </svg>
+
+          <div className="relative z-10 max-w-2xl">
+            <h2 className="font-display font-bold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.06]">
+              Join Quanta
+            </h2>
+            <p className="mt-3 sm:mt-4 text-slate-300/85 text-sm sm:text-lg leading-relaxed max-w-xl">
+              Membership starts with a 4-month probation. Discover our six departments, then apply.
+            </p>
+          </div>
+
+          {/* Interactive Orbital Portal Trigger */}
           <Link
             to="/join"
             onClick={() => playQuantumChime(784, 0.2)}
-            className="btn-shimmer mt-1 px-6 py-2.5 rounded-lg bg-[#1d4ed8] hover:bg-blue-600 text-white border border-cyan-400 font-semibold text-sm sm:text-base transition-all duration-250 hover:-translate-y-0.5 hover:shadow-[0_0_22px_rgba(56,189,248,0.5)]"
+            className="group relative z-10 inline-flex items-center gap-4 sm:gap-5 shrink-0"
           >
-            Start your application
+            <span className="font-display font-bold text-base sm:text-xl text-white group-hover:text-cyan-300 transition-colors">
+              Start your application
+            </span>
+            <span className="relative w-12 h-12 sm:w-16 sm:h-16 rounded-full border border-cyan-400/60 group-hover:border-cyan-300 flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_28px_rgba(56,189,248,0.45)]">
+              <svg
+                className="absolute inset-0 w-full h-full animate-spin-slow text-cyan-400/40"
+                viewBox="0 0 64 64"
+                fill="none"
+              >
+                <circle
+                  cx="32"
+                  cy="32"
+                  r="30"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeDasharray="4 6"
+                />
+              </svg>
+              <span className="text-lg sm:text-xl text-cyan-300 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                ↗
+              </span>
+            </span>
           </Link>
-        </SpotlightCard>
+        </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-12 sm:py-16 px-4 sm:px-6 max-w-6xl mx-auto">
-        <motion.h2
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="font-display font-bold text-2xl sm:text-4xl text-white mb-2"
-        >
-          Contact
-        </motion.h2>
+      {/* Contact — Open Architectural Hairline Grid */}
+      <section id="contact" className="pb-16 sm:pb-24 px-4 sm:px-6 max-w-6xl mx-auto">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-10">
+          <div>
+            <motion.h2
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight"
+            >
+              Contact
+            </motion.h2>
+            <p className="text-slate-400 text-sm sm:text-base mt-2">
+              Questions, partnerships or ideas? Get in touch.
+            </p>
+          </div>
+        </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.06 }}
-          className="text-slate-300/85 text-sm sm:text-base mb-6"
-        >
-          Questions, partnerships or ideas? Get in touch.
-        </motion.p>
+        <div className="grid grid-cols-1 md:grid-cols-3 border-y border-white/10 divide-y md:divide-y-0 md:divide-x divide-white/10">
+          <div className="py-5 sm:py-6 md:pr-8 flex flex-col justify-between gap-2 hairline-sweep">
+            <span className="font-mono text-xs uppercase tracking-widest text-slate-500">
+              University
+            </span>
+            <p className="font-display font-semibold text-base sm:text-lg text-white">
+              University of Algiers 1, Algiers
+            </p>
+          </div>
 
-        <SpotlightCard className="p-5 sm:p-7 flex flex-col items-start text-left gap-3">
-          <p className="text-sm sm:text-base text-slate-200">
-            <strong className="text-white font-semibold mr-2">University</strong>
-            University of Algiers 1, Algiers
-          </p>
-          <p className="text-sm sm:text-base text-slate-200">
-            <strong className="text-white font-semibold mr-2">Email</strong>
+          <div className="py-5 sm:py-6 md:px-8 flex flex-col justify-between gap-2 hairline-sweep">
+            <span className="font-mono text-xs uppercase tracking-widest text-slate-500">
+              Email
+            </span>
             <a
               href={`mailto:${EMAIL}`}
-              className="text-sky-200 hover:text-cyan-400 select-all transition-colors"
+              className="font-display font-semibold text-base sm:text-lg text-cyan-300 hover:text-white select-all transition-colors inline-flex items-center gap-2 break-all"
             >
-              {EMAIL}
+              <span>{EMAIL}</span>
+              <span className="text-sm shrink-0">↗</span>
             </a>
-          </p>
-          <div className="pt-1">
+          </div>
+
+          <div className="py-5 sm:py-6 md:pl-8 flex flex-col justify-between gap-2">
+            <span className="font-mono text-xs uppercase tracking-widest text-slate-500">
+              Social Networks
+            </span>
             <SocialIcons />
           </div>
-        </SpotlightCard>
+        </div>
       </section>
     </>
   );

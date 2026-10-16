@@ -14,10 +14,10 @@ export default function EventDetail() {
   }, [id]);
 
   return (
-    <section className="min-h-[80vh] pt-24 pb-16 px-4 sm:px-6 max-w-4xl mx-auto">
+    <section className="min-h-[80vh] pt-28 pb-20 px-4 sm:px-6 max-w-4xl mx-auto">
       <Link
         to="/#events"
-        className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 mb-6 font-medium transition-colors"
+        className="inline-flex items-center gap-2 text-sm text-cyan-400 hover:text-white mb-8 font-medium transition-colors hairline-sweep pb-1"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Back to events</span>
@@ -35,41 +35,41 @@ export default function EventDetail() {
       )}
 
       {e && (
-        <article className="quantum-card rounded-lg border border-sky-400/25 overflow-hidden text-left">
-          <div className="h-64 sm:h-80 w-full overflow-hidden">
+        <article className="text-left border-t border-white/15 pt-8">
+          <div className="flex flex-wrap items-baseline justify-between gap-4 mb-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-cyan-400">
+              {e.category}
+            </span>
+            <p className="text-xs sm:text-sm font-mono text-slate-400">
+              {fmtDate(e.date)} {e.time ? `· ${e.time}` : ''} · {e.location}
+            </p>
+          </div>
+
+          <h1 className="font-display font-bold text-3xl sm:text-5xl text-white tracking-tight leading-tight mb-8">
+            {e.title}
+          </h1>
+
+          <div className="h-64 sm:h-96 w-full overflow-hidden mb-8">
             <EventImage src={e.image} alt={e.title} category={e.category} />
           </div>
 
-          <div className="p-6 sm:p-8 space-y-4">
-            <span className="inline-block px-3 py-0.5 rounded-md border border-cyan-400 text-cyan-300 text-xs font-medium">
-              {e.category}
-            </span>
+          <p className="text-base sm:text-lg text-slate-200 leading-relaxed border-b border-white/10 pb-8">
+            {e.description}
+          </p>
 
-            <h1 className="font-display font-bold text-2xl sm:text-3xl text-white">
-              {e.title}
-            </h1>
-
-            <p className="text-sm text-slate-400">
-              {fmtDate(e.date)} {e.time ? `· ${e.time}` : ''} · {e.location}
-            </p>
-
-            <p className="text-sm sm:text-base text-slate-200 leading-relaxed">
-              {e.description}
-            </p>
-
-            {e.registrationUrl && (
-              <div className="pt-2">
-                <a
-                  href={e.registrationUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-block px-6 py-2.5 rounded-lg bg-[#1d4ed8] hover:bg-blue-600 text-white border border-cyan-400 font-semibold text-sm transition-all"
-                >
-                  Register
-                </a>
-              </div>
-            )}
-          </div>
+          {e.registrationUrl && (
+            <div className="pt-6">
+              <a
+                href={e.registrationUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-[#1d4ed8] hover:bg-blue-600 text-white border border-cyan-400 font-semibold text-sm transition-all"
+              >
+                <span>Register</span>
+                <span>↗</span>
+              </a>
+            </div>
+          )}
         </article>
       )}
     </section>

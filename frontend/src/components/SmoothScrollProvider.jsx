@@ -1,4 +1,4 @@
-import React, { useEffect, createContext, useContext, useRef } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
@@ -9,39 +9,58 @@ export function useLenis() {
 }
 
 export default function SmoothScrollProvider({ children }) {
-  const lenisRef = useRef(null);
+  const [lenisInstance, setLenisInstance] = useState(null);
 
   useEffect(() => {
-    // Initialize Lenis with buttery Apple/Linear momentum curve
     const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.11,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 0.95,
+      syncTouch: false,
+      wheelMultiplier: 1,
       touchMultiplier: 1.5,
       infinite: false,
     });
 
-    lenisRef.current = lenis;
+    setLenisInstance(lenis);
 
+    let rafId;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
+    rafId = requestAnimationFrame(raf);
 
-    const rafId = requestAnimationFrame(raf);
+    // Synchronize anchor clicks with Lenis smooth scroll
+    const handleAnchorClick = (e) => {
+      const anchor = e.target.closest('a[href*="#"]');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href');
+      if (!href) return;
+      const hashIndex = href.indexOf('#');
+      if (hashIndex === -1) return;
+      const targetId = href.slice(hashIndex + 1);
+      const targetEl = document.getElementById(targetId);
+      if (targetEl && window.location.pathname === '/') {
+        e.preventDefault();
+        lenis.scrollTo(targetEl, { offset: -64, duration: 1.05 });
+        window.history.pushState(null, '', `/#${targetId}`);
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
 
     return () => {
+      document.removeEventListener('click', handleAnchorClick);
       cancelAnimationFrame(rafId);
       lenis.destroy();
-      lenisRef.current = null;
+      setLenisInstance(null);
     };
   }, []);
 
   return (
-    <LenisContext.Provider value={lenisRef.current}>
+    <LenisContext.Provider value={lenisInstance}>
       {children}
     </LenisContext.Provider>
   );

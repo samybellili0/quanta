@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useId } from 'react';
 
-// ==========================================
-// QUANTA BESPOKE ORIGINAL SCIENTIFIC ICONS
-// Custom crafted vector graphics with quantum glow
-// ==========================================
+// ============================================================================
+// QUANTA BESPOKE SCIENTIFIC & ARCHITECTURAL VECTOR INSTRUMENTS
+// High-precision, collision-free (useId) luminous SVGs crafted for PC & Mobile
+// ============================================================================
 
-export function AtomOrbitalSvg({ size = 32, className = '', animate = true }) {
+export function AtomOrbitalSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
   return (
     <svg
       width={size}
@@ -13,97 +14,102 @@ export function AtomOrbitalSvg({ size = 32, className = '', animate = true }) {
       viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
+      className={`shrink-0 overflow-visible ${className}`}
       role="img"
-      aria-label="Quantum Orbital Atom"
+      aria-label="Quantum Physics Orbital"
     >
       <defs>
-        <radialGradient id="atomCoreGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="60%" stopColor="#06b6d4" />
-          <stop offset="100%" stopColor="#0284c7" stopOpacity="0.8" />
+        <radialGradient id={`${uid}-core`} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="45%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#0284c7" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id="orbitalGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.9" />
-          <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0.8" />
+        <linearGradient id={`${uid}-ring1`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#7dd3fc" />
+          <stop offset="50%" stopColor="#38bdf8" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#06b6d4" />
         </linearGradient>
-        <linearGradient id="orbitalGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#818cf8" stopOpacity="0.9" />
-          <stop offset="50%" stopColor="#6366f1" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#a855f7" stopOpacity="0.8" />
+        <linearGradient id={`${uid}-ring2`} x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#a5b4fc" />
+          <stop offset="50%" stopColor="#818cf8" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#38bdf8" />
         </linearGradient>
-        <filter id="atomGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="2.5" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
       </defs>
 
-      {/* Orbit Ellipse 1 (Rotated 30 deg) */}
-      <ellipse
-        cx="32"
-        cy="32"
-        rx="26"
-        ry="10"
-        transform="rotate(-30 32 32)"
-        stroke="url(#orbitalGrad1)"
-        strokeWidth="1.8"
-        strokeDasharray={animate ? '5 2.5' : 'none'}
-        className={animate ? 'animate-[spin_12s_linear_infinite]' : ''}
-        style={{ transformOrigin: '32px 32px' }}
-      />
-
-      {/* Orbit Ellipse 2 (Rotated 90 deg) */}
-      <ellipse
-        cx="32"
-        cy="32"
-        rx="26"
-        ry="10"
-        transform="rotate(90 32 32)"
-        stroke="url(#orbitalGrad2)"
-        strokeWidth="1.8"
-        className={animate ? 'animate-[spin_16s_linear_infinite_reverse]' : ''}
-        style={{ transformOrigin: '32px 32px' }}
-      />
-
-      {/* Orbit Ellipse 3 (Rotated 30 deg opposite) */}
-      <ellipse
-        cx="32"
-        cy="32"
-        rx="26"
-        ry="10"
-        transform="rotate(30 32 32)"
-        stroke="url(#orbitalGrad1)"
-        strokeWidth="1.8"
-        strokeDasharray="4 3"
-      />
-
-      {/* Ambient Nucleus Glow Halo */}
-      <circle cx="32" cy="32" r="10" fill="#06b6d4" fillOpacity="0.25" filter="url(#atomGlow)" />
-
-      {/* Pulsing Quantum Core Nucleus */}
+      {/* Outer Reference Horizon */}
       <circle
         cx="32"
         cy="32"
-        r="6.5"
-        fill="url(#atomCoreGrad)"
-        stroke="#e0f2fe"
-        strokeWidth="1.2"
-        className={animate ? 'animate-pulse' : ''}
+        r="28"
+        stroke="rgba(56,189,248,0.2)"
+        strokeWidth="1"
+        strokeDasharray="2 5"
       />
 
-      {/* High-energy central proton spark */}
-      <circle cx="30" cy="30" r="2" fill="#ffffff" />
+      {/* Elliptical Quantum Orbit 1 */}
+      <g transform="rotate(-30 32 32)">
+        <ellipse
+          cx="32"
+          cy="32"
+          rx="27"
+          ry="10.5"
+          stroke={`url(#${uid}-ring1)`}
+          strokeWidth="1.75"
+        />
+        <circle
+          cx="59"
+          cy="32"
+          r="2.6"
+          fill="#e0f2fe"
+          className={animate ? 'animate-pulse' : ''}
+        />
+        <circle cx="59" cy="32" r="5" fill="#38bdf8" fillOpacity="0.35" />
+      </g>
 
-      {/* Orbiting Quantum Particles (Electrons) */}
-      <circle cx="10" cy="20" r="2.2" fill="#38bdf8" filter="url(#atomGlow)" />
-      <circle cx="53" cy="42" r="2.2" fill="#818cf8" filter="url(#atomGlow)" />
-      <circle cx="32" cy="7" r="1.8" fill="#a5f3fc" />
+      {/* Elliptical Quantum Orbit 2 */}
+      <g transform="rotate(30 32 32)">
+        <ellipse
+          cx="32"
+          cy="32"
+          rx="27"
+          ry="10.5"
+          stroke={`url(#${uid}-ring2)`}
+          strokeWidth="1.75"
+        />
+        <circle cx="5" cy="32" r="2.6" fill="#a5b4fc" />
+        <circle cx="5" cy="32" r="5" fill="#818cf8" fillOpacity="0.35" />
+      </g>
+
+      {/* Elliptical Quantum Orbit 3 (Vertical Spin Axis) */}
+      <g transform="rotate(90 32 32)">
+        <ellipse
+          cx="32"
+          cy="32"
+          rx="27"
+          ry="9.5"
+          stroke={`url(#${uid}-ring1)`}
+          strokeWidth="1.4"
+          strokeDasharray="4 3"
+        />
+        <circle cx="32" cy="22.5" r="2.2" fill="#38bdf8" />
+      </g>
+
+      {/* Radiant Quantum Nucleus */}
+      <circle cx="32" cy="32" r="11" fill={`url(#${uid}-core)`} />
+      <circle
+        cx="32"
+        cy="32"
+        r="4.2"
+        fill="#ffffff"
+        stroke="#38bdf8"
+        strokeWidth="1.5"
+      />
     </svg>
   );
 }
 
-export function CircuitChipSvg({ size = 32, className = '', animate = true }) {
+export function MathModelingSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
   return (
     <svg
       width={size}
@@ -111,122 +117,323 @@ export function CircuitChipSvg({ size = 32, className = '', animate = true }) {
       viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
+      className={`shrink-0 overflow-visible ${className}`}
       role="img"
-      aria-label="Cyber Circuit & Prototyping Microchip"
+      aria-label="Mathematical Manifold & Harmonic Geometry"
     >
       <defs>
-        <linearGradient id="chipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#0f172a" />
-          <stop offset="100%" stopColor="#0284c7" stopOpacity="0.4" />
+        <linearGradient id={`${uid}-math`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#6ee7b7" />
+          <stop offset="50%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#818cf8" />
         </linearGradient>
-        <linearGradient id="traceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#38bdf8" />
-          <stop offset="100%" stopColor="#06b6d4" />
-        </linearGradient>
-        <filter id="circuitGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
       </defs>
 
-      {/* Outer Circuit Traces */}
+      {/* Precision Coordinate Axes */}
+      <line x1="8" y1="32" x2="56" y2="32" stroke="rgba(148,163,184,0.28)" strokeWidth="1" />
+      <line x1="32" y1="8" x2="32" y2="56" stroke="rgba(148,163,184,0.28)" strokeWidth="1" />
+
+      {/* Outer Sacred Geometry Octagon / Circle */}
+      <circle
+        cx="32"
+        cy="32"
+        r="25"
+        stroke="rgba(52,211,153,0.3)"
+        strokeWidth="1.2"
+        strokeDasharray="3 4"
+        className={animate ? 'animate-spin-slow' : ''}
+        style={{ transformOrigin: '32px 32px' }}
+      />
+
+      {/* Parametric Lissajous / Harmonic Wave Curve */}
       <path
-        d="M8 20H18L24 26"
-        stroke="url(#traceGrad)"
-        strokeWidth="1.8"
+        d="M10 32 C 16 10, 26 10, 32 32 C 38 54, 48 54, 54 32"
+        stroke={`url(#${uid}-math)`}
+        strokeWidth="2.2"
         strokeLinecap="round"
       />
-      <circle cx="8" cy="20" r="2" fill="#38bdf8" />
-
       <path
-        d="M8 44H18L24 38"
-        stroke="url(#traceGrad)"
-        strokeWidth="1.8"
+        d="M10 32 C 16 54, 26 54, 32 32 C 38 10, 48 10, 54 32"
+        stroke="#38bdf8"
+        strokeWidth="1.5"
+        strokeOpacity="0.55"
+        strokeDasharray="3 3"
         strokeLinecap="round"
       />
-      <circle cx="8" cy="44" r="2" fill="#38bdf8" />
 
-      <path
-        d="M56 20H46L40 26"
-        stroke="url(#traceGrad)"
-        strokeWidth="1.8"
-        strokeLinecap="round"
+      {/* Inscribed Geometric Rhombus */}
+      <polygon
+        points="32,11 53,32 32,53 11,32"
+        stroke="#34d399"
+        strokeWidth="1.3"
+        strokeOpacity="0.65"
+        fill="rgba(16,185,129,0.06)"
       />
-      <circle cx="56" cy="20" r="2" fill="#38bdf8" />
 
+      {/* Critical Inflection Nodes */}
+      <circle cx="32" cy="32" r="3.2" fill="#ffffff" stroke="#34d399" strokeWidth="1.5" />
+      <circle cx="21" cy="19" r="2.5" fill="#6ee7b7" />
+      <circle cx="43" cy="45" r="2.5" fill="#38bdf8" />
+      <circle cx="32" cy="11" r="2" fill="#ffffff" />
+      <circle cx="32" cy="53" r="2" fill="#ffffff" />
+    </svg>
+  );
+}
+
+export function NeuralAiSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`shrink-0 overflow-visible ${className}`}
+      role="img"
+      aria-label="Computer Science, Algorithms & Neural AI"
+    >
+      <defs>
+        <linearGradient id={`${uid}-synapse`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#818cf8" />
+        </linearGradient>
+      </defs>
+
+      {/* Outer Tensor Brackets */}
       <path
-        d="M56 44H46L40 38"
-        stroke="url(#traceGrad)"
-        strokeWidth="1.8"
+        d="M14 10 H8 V54 H14"
+        stroke="rgba(56,189,248,0.45)"
+        strokeWidth="1.6"
         strokeLinecap="round"
+        strokeLinejoin="round"
       />
-      <circle cx="56" cy="44" r="2" fill="#38bdf8" />
-
       <path
-        d="M32 8V18"
-        stroke="url(#traceGrad)"
-        strokeWidth="1.8"
+        d="M50 10 H56 V54 H50"
+        stroke="rgba(129,140,248,0.45)"
+        strokeWidth="1.6"
         strokeLinecap="round"
+        strokeLinejoin="round"
       />
-      <circle cx="32" cy="8" r="2" fill="#38bdf8" />
 
-      <path
-        d="M32 56V46"
-        stroke="url(#traceGrad)"
+      {/* Weighted Synaptic Connections */}
+      <g stroke={`url(#${uid}-synapse)`} strokeWidth="1.4" strokeOpacity="0.75">
+        <line x1="17" y1="18" x2="32" y2="14" />
+        <line x1="17" y1="18" x2="32" y2="32" />
+        <line x1="17" y1="32" x2="32" y2="14" />
+        <line x1="17" y1="32" x2="32" y2="32" strokeWidth="2" />
+        <line x1="17" y1="32" x2="32" y2="50" />
+        <line x1="17" y1="46" x2="32" y2="32" />
+        <line x1="17" y1="46" x2="32" y2="50" />
+
+        <line x1="32" y1="14" x2="47" y2="23" />
+        <line x1="32" y1="32" x2="47" y2="23" strokeWidth="2" />
+        <line x1="32" y1="32" x2="47" y2="41" strokeWidth="2" />
+        <line x1="32" y1="50" x2="47" y2="41" />
+      </g>
+
+      {/* Input Layer Nodes */}
+      <circle cx="17" cy="18" r="3.2" fill="#0f172a" stroke="#38bdf8" strokeWidth="1.8" />
+      <circle cx="17" cy="32" r="3.5" fill="#38bdf8" stroke="#ffffff" strokeWidth="1.2" />
+      <circle cx="17" cy="46" r="3.2" fill="#0f172a" stroke="#38bdf8" strokeWidth="1.8" />
+
+      {/* Hidden Attention Layer Nodes */}
+      <circle cx="32" cy="14" r="3.8" fill="#0f172a" stroke="#7dd3fc" strokeWidth="1.8" />
+      <circle
+        cx="32"
+        cy="32"
+        r="5.2"
+        fill="#38bdf8"
+        stroke="#ffffff"
         strokeWidth="1.8"
-        strokeLinecap="round"
+        className={animate ? 'animate-pulse' : ''}
       />
-      <circle cx="32" cy="56" r="2" fill="#38bdf8" />
+      <circle cx="32" cy="50" r="3.8" fill="#0f172a" stroke="#7dd3fc" strokeWidth="1.8" />
 
-      {/* Main Silicon Chip Die */}
-      <rect
-        x="20"
-        y="20"
-        width="24"
-        height="24"
-        rx="5"
-        fill="url(#chipGrad)"
+      {/* Output Layer Nodes */}
+      <circle cx="47" cy="23" r="4" fill="#818cf8" stroke="#ffffff" strokeWidth="1.5" />
+      <circle cx="47" cy="41" r="4" fill="#38bdf8" stroke="#ffffff" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+export function DeepSpaceTelescopeSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`shrink-0 overflow-visible ${className}`}
+      role="img"
+      aria-label="Astronomy & Deep Space Observatory"
+    >
+      <defs>
+        <linearGradient id={`${uid}-cosmos`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#7dd3fc" />
+          <stop offset="50%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#818cf8" />
+        </linearGradient>
+      </defs>
+
+      {/* Outer Celestial Meridian Ring */}
+      <circle
+        cx="32"
+        cy="32"
+        r="26"
+        stroke="rgba(56,189,248,0.22)"
+        strokeWidth="1.2"
+        strokeDasharray="4 4"
+      />
+
+      {/* Tilted Planetary Ring System */}
+      <ellipse
+        cx="32"
+        cy="32"
+        rx="28"
+        ry="9"
+        transform="rotate(-24 32 32)"
+        stroke={`url(#${uid}-cosmos)`}
+        strokeWidth="2"
+      />
+      <ellipse
+        cx="32"
+        cy="32"
+        rx="22"
+        ry="6.5"
+        transform="rotate(-24 32 32)"
+        stroke="rgba(125,211,252,0.45)"
+        strokeWidth="1"
+      />
+
+      {/* Central Celestial Body / Exoplanet */}
+      <circle
+        cx="32"
+        cy="32"
+        r="11"
+        fill="#0c1938"
         stroke="#38bdf8"
         strokeWidth="1.8"
-        filter="url(#circuitGlow)"
+      />
+      {/* Illuminated Crescent Highlight */}
+      <path
+        d="M28 22 A 10 10 0 0 1 41 36"
+        stroke="#ffffff"
+        strokeWidth="1.8"
+        strokeLinecap="round"
       />
 
-      {/* Internal Logic Matrix Grid */}
-      <rect
-        x="25"
-        y="25"
-        width="14"
-        height="14"
-        rx="2"
-        fill="#0369a1"
-        fillOpacity="0.4"
+      {/* Relativistic Pulsar Polar Jets */}
+      <line
+        x1="20"
+        y1="8"
+        x2="26"
+        y2="20"
         stroke="#7dd3fc"
-        strokeWidth="1"
-        strokeDasharray="2 1"
+        strokeWidth="1.5"
+        strokeDasharray="2 2"
+      />
+      <line
+        x1="38"
+        y1="44"
+        x2="44"
+        y2="56"
+        stroke="#7dd3fc"
+        strokeWidth="1.5"
+        strokeDasharray="2 2"
       />
 
-      {/* Central Core Glow Spark */}
+      {/* Orbiting Satellite / Moon + Four-Point Star */}
+      <circle cx="56" cy="21" r="2.6" fill="#ffffff" />
+      <path
+        d="M14 12 L15.2 15.8 L19 17 L15.2 18.2 L14 22 L12.8 18.2 L9 17 L12.8 15.8 Z"
+        fill="#38bdf8"
+        className={animate ? 'animate-pulse' : ''}
+      />
+    </svg>
+  );
+}
+
+export function CircuitChipSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`shrink-0 overflow-visible ${className}`}
+      role="img"
+      aria-label="Engineering, Robotics & Embedded Hardware"
+    >
+      <defs>
+        <linearGradient id={`${uid}-pcb`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#34d399" />
+        </linearGradient>
+      </defs>
+
+      {/* Precision PCB Bus Traces */}
+      <g stroke={`url(#${uid}-pcb)`} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M8 22 H16 L21 27" />
+        <path d="M8 42 H16 L21 37" />
+        <path d="M56 22 H48 L43 27" />
+        <path d="M56 42 H48 L43 37" />
+        <path d="M22 8 V16 L27 21" />
+        <path d="M42 8 V16 L37 21" />
+        <path d="M22 56 V48 L27 43" />
+        <path d="M42 56 V48 L37 43" />
+      </g>
+
+      {/* Solder Pad Terminals */}
+      <circle cx="8" cy="22" r="2.2" fill="#38bdf8" />
+      <circle cx="8" cy="42" r="2.2" fill="#34d399" />
+      <circle cx="56" cy="22" r="2.2" fill="#38bdf8" />
+      <circle cx="56" cy="42" r="2.2" fill="#34d399" />
+      <circle cx="22" cy="8" r="2.2" fill="#38bdf8" />
+      <circle cx="42" cy="8" r="2.2" fill="#34d399" />
+      <circle cx="22" cy="56" r="2.2" fill="#38bdf8" />
+      <circle cx="42" cy="56" r="2.2" fill="#34d399" />
+
+      {/* Central Silicon Microprocessor Package */}
+      <rect
+        x="19"
+        y="19"
+        width="26"
+        height="26"
+        rx="4"
+        fill="#0a162e"
+        stroke="#38bdf8"
+        strokeWidth="1.8"
+      />
+
+      {/* Inner Architecture Core */}
+      <rect
+        x="24.5"
+        y="24.5"
+        width="15"
+        height="15"
+        rx="2"
+        stroke="#7dd3fc"
+        strokeWidth="1.2"
+        fill="rgba(56,189,248,0.12)"
+      />
       <circle
         cx="32"
         cy="32"
         r="3"
         fill="#ffffff"
-        className={animate ? 'animate-ping' : ''}
-        style={{ animationDuration: '3s' }}
+        className={animate ? 'animate-pulse' : ''}
       />
-      <circle cx="32" cy="32" r="2" fill="#38bdf8" />
-
-      {/* Pin Indicators */}
-      <line x1="26" y1="18" x2="26" y2="20" stroke="#7dd3fc" strokeWidth="1.5" />
-      <line x1="38" y1="18" x2="38" y2="20" stroke="#7dd3fc" strokeWidth="1.5" />
-      <line x1="26" y1="44" x2="26" y2="46" stroke="#7dd3fc" strokeWidth="1.5" />
-      <line x1="38" y1="44" x2="38" y2="46" stroke="#7dd3fc" strokeWidth="1.5" />
     </svg>
   );
 }
 
-export function SynapseNetworkSvg({ size = 32, className = '', animate = true }) {
+export function DnaGenomicsSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
   return (
     <svg
       width={size}
@@ -234,403 +441,275 @@ export function SynapseNetworkSvg({ size = 32, className = '', animate = true })
       viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
+      className={`shrink-0 overflow-visible ${className}`}
       role="img"
-      aria-label="Synaptic Mentorship & Academic Peer Care Network"
+      aria-label="Interdisciplinary STEM & Molecular Lattice"
     >
       <defs>
-        <radialGradient id="nodeGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#e879f9" />
-          <stop offset="100%" stopColor="#a855f7" />
-        </radialGradient>
-        <filter id="synapseGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="2.5" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
+        <linearGradient id={`${uid}-stem`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="50%" stopColor="#2dd4bf" />
+          <stop offset="100%" stopColor="#818cf8" />
+        </linearGradient>
       </defs>
 
-      {/* Concentric Care Resonance Wave Rings */}
+      {/* Outer Hexagonal Molecular Cage */}
+      <polygon
+        points="32,6 54,19 54,45 32,58 10,45 10,19"
+        stroke={`url(#${uid}-stem)`}
+        strokeWidth="1.8"
+        fill="rgba(45,212,191,0.06)"
+      />
+
+      {/* Internal Crystalline Bonds */}
+      <line x1="32" y1="6" x2="32" y2="58" stroke="rgba(56,189,248,0.35)" strokeWidth="1.2" />
+      <line x1="10" y1="19" x2="54" y2="45" stroke="rgba(56,189,248,0.35)" strokeWidth="1.2" />
+      <line x1="54" y1="19" x2="10" y2="45" stroke="rgba(56,189,248,0.35)" strokeWidth="1.2" />
+
+      {/* Inner Benzene / Graphene Resonance Ring */}
+      <circle
+        cx="32"
+        cy="32"
+        r="11"
+        stroke="#7dd3fc"
+        strokeWidth="1.6"
+        strokeDasharray="4 2.5"
+        className={animate ? 'animate-spin-slow' : ''}
+        style={{ transformOrigin: '32px 32px' }}
+      />
+
+      {/* Atomic Vertex Spheres */}
+      <circle cx="32" cy="6" r="2.8" fill="#38bdf8" stroke="#ffffff" strokeWidth="1" />
+      <circle cx="54" cy="19" r="2.8" fill="#2dd4bf" stroke="#ffffff" strokeWidth="1" />
+      <circle cx="54" cy="45" r="2.8" fill="#818cf8" stroke="#ffffff" strokeWidth="1" />
+      <circle cx="32" cy="58" r="2.8" fill="#38bdf8" stroke="#ffffff" strokeWidth="1" />
+      <circle cx="10" cy="45" r="2.8" fill="#2dd4bf" stroke="#ffffff" strokeWidth="1" />
+      <circle cx="10" cy="19" r="2.8" fill="#818cf8" stroke="#ffffff" strokeWidth="1" />
+
+      {/* Central Core */}
+      <circle cx="32" cy="32" r="4" fill="#ffffff" />
+    </svg>
+  );
+}
+
+export function SynapseNetworkSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`shrink-0 overflow-visible ${className}`}
+      role="img"
+      aria-label="Community Network, Leadership & Synergy"
+    >
+      <defs>
+        <linearGradient id={`${uid}-net`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#c084fc" />
+        </linearGradient>
+      </defs>
+
+      {/* Outer Orbital Ring */}
       <circle
         cx="32"
         cy="32"
         r="24"
-        stroke="#c084fc"
-        strokeWidth="1.2"
-        strokeOpacity="0.3"
-        strokeDasharray="4 3"
-        className={animate ? 'animate-[spin_24s_linear_infinite]' : ''}
+        stroke="rgba(192,132,252,0.35)"
+        strokeWidth="1.3"
+        strokeDasharray="5 4"
+        className={animate ? 'animate-spin-slow' : ''}
         style={{ transformOrigin: '32px 32px' }}
+      />
+
+      {/* Constellation Mesh Bridges */}
+      <g stroke={`url(#${uid}-net)`} strokeWidth="1.6" strokeLinecap="round">
+        <line x1="32" y1="32" x2="16" y2="18" />
+        <line x1="32" y1="32" x2="48" y2="18" />
+        <line x1="32" y1="32" x2="16" y2="46" />
+        <line x1="32" y1="32" x2="48" y2="46" />
+        <line x1="16" y1="18" x2="48" y2="18" strokeOpacity="0.45" />
+        <line x1="16" y1="46" x2="48" y2="46" strokeOpacity="0.45" />
+      </g>
+
+      {/* Satellite Nodes */}
+      <circle cx="16" cy="18" r="3.6" fill="#0f172a" stroke="#38bdf8" strokeWidth="1.8" />
+      <circle cx="48" cy="18" r="3.6" fill="#0f172a" stroke="#c084fc" strokeWidth="1.8" />
+      <circle cx="16" cy="46" r="3.6" fill="#0f172a" stroke="#c084fc" strokeWidth="1.8" />
+      <circle cx="48" cy="46" r="3.6" fill="#0f172a" stroke="#38bdf8" strokeWidth="1.8" />
+
+      {/* Central Star Hub */}
+      <circle cx="32" cy="32" r="6.5" fill="#0c1938" stroke="#ffffff" strokeWidth="1.8" />
+      <circle cx="32" cy="32" r="2.8" fill="#38bdf8" />
+    </svg>
+  );
+}
+
+export function MaterialsCrystalSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`shrink-0 overflow-visible ${className}`}
+      role="img"
+      aria-label="Precision Architecture & Logistics"
+    >
+      <defs>
+        <linearGradient id={`${uid}-crys`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#fbbf24" />
+        </linearGradient>
+      </defs>
+
+      {/* Isometric 3D Cube / Crystal */}
+      <polygon
+        points="32,8 54,20 54,44 32,56 10,44 10,20"
+        stroke={`url(#${uid}-crys)`}
+        strokeWidth="1.8"
+        fill="rgba(56,189,248,0.06)"
+      />
+      <polyline
+        points="10,20 32,32 54,20"
+        stroke="#7dd3fc"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <line x1="32" y1="32" x2="32" y2="56" stroke="#7dd3fc" strokeWidth="1.6" />
+
+      {/* Inner Floating Octahedron Core */}
+      <polygon
+        points="32,18 44,32 32,46 20,32"
+        stroke="#fbbf24"
+        strokeWidth="1.3"
+        strokeDasharray="3 2"
+        fill="rgba(251,191,36,0.1)"
+      />
+
+      <circle
+        cx="32"
+        cy="32"
+        r="3.2"
+        fill="#ffffff"
+        stroke="#38bdf8"
+        strokeWidth="1.5"
+        className={animate ? 'animate-pulse' : ''}
+      />
+    </svg>
+  );
+}
+
+export function CyberShieldSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`shrink-0 overflow-visible ${className}`}
+      role="img"
+      aria-label="Cybersecurity, Hackathons & CTF"
+    >
+      <defs>
+        <linearGradient id={`${uid}-shield`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="100%" stopColor="#6366f1" />
+        </linearGradient>
+      </defs>
+
+      <path
+        d="M32 7 L52 15 V31 C52 44 43 52 32 58 C21 52 12 44 12 31 V15 L32 7 Z"
+        fill="rgba(14,25,52,0.7)"
+        stroke={`url(#${uid}-shield)`}
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M32 14 L46 20 V31 C46 40 40 46 32 51 C24 46 18 40 18 31 V20 L32 14 Z"
+        stroke="rgba(125,211,252,0.45)"
+        strokeWidth="1.2"
+        strokeDasharray="3 3"
+      />
+
+      {/* Central Cryptographic Keyhole / Node */}
+      <circle
+        cx="32"
+        cy="29"
+        r="4.5"
+        stroke="#ffffff"
+        strokeWidth="1.8"
+        fill="#38bdf8"
+        className={animate ? 'animate-pulse' : ''}
+      />
+      <path
+        d="M32 33.5 V42"
+        stroke="#ffffff"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function HolographicMediaSvg({ size = 40, className = '', animate = true }) {
+  const uid = useId();
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={`shrink-0 overflow-visible ${className}`}
+      role="img"
+      aria-label="Visual Media, Optics & Outreach"
+    >
+      <defs>
+        <linearGradient id={`${uid}-lens`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#38bdf8" />
+          <stop offset="50%" stopColor="#818cf8" />
+          <stop offset="100%" stopColor="#f43f5e" />
+        </linearGradient>
+      </defs>
+
+      {/* Outer Optical Ring */}
+      <circle
+        cx="32"
+        cy="32"
+        r="24"
+        stroke={`url(#${uid}-lens)`}
+        strokeWidth="1.8"
       />
       <circle
         cx="32"
         cy="32"
-        r="17"
-        stroke="#e879f9"
-        strokeWidth="1.4"
-        strokeOpacity="0.45"
-      />
-
-      {/* Synaptic Link Bridges */}
-      <line x1="32" y1="32" x2="16" y2="20" stroke="#c084fc" strokeWidth="1.8" strokeLinecap="round" />
-      <line x1="32" y1="32" x2="48" y2="18" stroke="#c084fc" strokeWidth="1.8" strokeLinecap="round" />
-      <line x1="32" y1="32" x2="20" y2="48" stroke="#c084fc" strokeWidth="1.8" strokeLinecap="round" />
-      <line x1="32" y1="32" x2="46" y2="46" stroke="#c084fc" strokeWidth="1.8" strokeLinecap="round" />
-      <line x1="16" y1="20" x2="48" y2="18" stroke="#e879f9" strokeWidth="1" strokeDasharray="3 3" strokeOpacity="0.5" />
-      <line x1="20" y1="48" x2="46" y2="46" stroke="#e879f9" strokeWidth="1" strokeDasharray="3 3" strokeOpacity="0.5" />
-
-      {/* Peripheral Academic Nodes */}
-      <circle cx="16" cy="20" r="4.5" fill="#a855f7" stroke="#f5d0fe" strokeWidth="1.2" filter="url(#synapseGlow)" />
-      <circle cx="16" cy="20" r="1.5" fill="#ffffff" />
-
-      <circle cx="48" cy="18" r="4" fill="#a855f7" stroke="#f5d0fe" strokeWidth="1.2" filter="url(#synapseGlow)" />
-      <circle cx="48" cy="18" r="1.5" fill="#ffffff" />
-
-      <circle cx="20" cy="48" r="4" fill="#a855f7" stroke="#f5d0fe" strokeWidth="1.2" filter="url(#synapseGlow)" />
-      <circle cx="20" cy="48" r="1.5" fill="#ffffff" />
-
-      <circle cx="46" cy="46" r="4.5" fill="#a855f7" stroke="#f5d0fe" strokeWidth="1.2" filter="url(#synapseGlow)" />
-      <circle cx="46" cy="46" r="1.5" fill="#ffffff" />
-
-      {/* Central Heart of Mentorship Node */}
-      <circle cx="32" cy="32" r="8" fill="url(#nodeGrad)" stroke="#ffffff" strokeWidth="1.6" filter="url(#synapseGlow)" />
-      <polygon
-        points="32,27 34,31 38,32 34,35 32,39 30,35 26,32 30,31"
-        fill="#ffffff"
-        className={animate ? 'animate-pulse' : ''}
-      />
-    </svg>
-  );
-}
-
-export function DeepSpaceTelescopeSvg({ size = 32, className = '', animate = true }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
-      role="img"
-      aria-label="Deep Space Astronomy Observatory Dish & Outreach"
-    >
-      <defs>
-        <linearGradient id="dishGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#10b981" />
-          <stop offset="100%" stopColor="#059669" />
-        </linearGradient>
-        <filter id="telescopeGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
-        </filter>
-      </defs>
-
-      {/* Outward Concentric Signal Wavefronts */}
-      <path
-        d="M38 12C44 14 50 20 52 26"
-        stroke="#34d399"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeOpacity="0.4"
-      />
-      <path
-        d="M44 8C52 11 58 18 60 26"
-        stroke="#6ee7b7"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeOpacity="0.7"
-        className={animate ? 'animate-pulse' : ''}
-      />
-      <path
-        d="M50 4C60 8 64 16 64 24"
-        stroke="#a7f3d0"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeDasharray="2 3"
-      />
-
-      {/* Target Reticle Orbit in Deep Space */}
-      <circle cx="50" cy="14" r="5" stroke="#34d399" strokeWidth="1" strokeDasharray="2 2" />
-      <circle cx="50" cy="14" r="1.5" fill="#ffffff" />
-
-      {/* Parabolic Antenna Dish Arc */}
-      <path
-        d="M14 42C12 30 22 18 36 16C40 28 32 40 20 44"
-        fill="url(#dishGrad)"
-        fillOpacity="0.25"
-        stroke="#10b981"
-        strokeWidth="2.2"
-        strokeLinecap="round"
-        filter="url(#telescopeGlow)"
-      />
-
-      {/* Sub-reflector Feed Arm */}
-      <line x1="28" y1="28" x2="42" y2="18" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="42" cy="18" r="3" fill="#34d399" stroke="#ffffff" strokeWidth="1" />
-
-      {/* Sturdy Pedestal Stand Base */}
-      <line x1="20" y1="44" x2="16" y2="56" stroke="#059669" strokeWidth="2.4" strokeLinecap="round" />
-      <line x1="28" y1="42" x2="34" y2="56" stroke="#059669" strokeWidth="2.4" strokeLinecap="round" />
-      <line x1="12" y1="56" x2="38" y2="56" stroke="#10b981" strokeWidth="2.4" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-export function NeuralAiSvg({ size = 32, className = '', animate = true }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
-      role="img"
-      aria-label="Neural Network and AI Engine"
-    >
-      <defs>
-        <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#06b6d4" />
-          <stop offset="100%" stopColor="#3b82f6" />
-        </linearGradient>
-      </defs>
-
-      {/* Synaptic Weights */}
-      <line x1="14" y1="18" x2="32" y2="14" stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.6" />
-      <line x1="14" y1="18" x2="32" y2="32" stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.6" />
-      <line x1="14" y1="32" x2="32" y2="14" stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.6" />
-      <line x1="14" y1="32" x2="32" y2="32" stroke="#38bdf8" strokeWidth="1.4" strokeOpacity="0.8" />
-      <line x1="14" y1="32" x2="32" y2="50" stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.6" />
-      <line x1="14" y1="46" x2="32" y2="32" stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.6" />
-      <line x1="14" y1="46" x2="32" y2="50" stroke="#38bdf8" strokeWidth="1.2" strokeOpacity="0.6" />
-
-      <line x1="32" y1="14" x2="50" y2="24" stroke="#38bdf8" strokeWidth="1.4" strokeOpacity="0.8" />
-      <line x1="32" y1="32" x2="50" y2="24" stroke="#38bdf8" strokeWidth="1.4" strokeOpacity="0.8" />
-      <line x1="32" y1="32" x2="50" y2="40" stroke="#38bdf8" strokeWidth="1.4" strokeOpacity="0.8" />
-      <line x1="32" y1="50" x2="50" y2="40" stroke="#38bdf8" strokeWidth="1.4" strokeOpacity="0.8" />
-
-      {/* Layer 1 Nodes */}
-      <circle cx="14" cy="18" r="4" fill="#0284c7" stroke="#38bdf8" strokeWidth="1.4" />
-      <circle cx="14" cy="32" r="4" fill="#0284c7" stroke="#38bdf8" strokeWidth="1.4" />
-      <circle cx="14" cy="46" r="4" fill="#0284c7" stroke="#38bdf8" strokeWidth="1.4" />
-
-      {/* Hidden Layer Nodes */}
-      <circle cx="32" cy="14" r="5" fill="#0369a1" stroke="#7dd3fc" strokeWidth="1.6" />
-      <circle cx="32" cy="32" r="6" fill="#0284c7" stroke="#ffffff" strokeWidth="1.8" className={animate ? 'animate-pulse' : ''} />
-      <circle cx="32" cy="50" r="5" fill="#0369a1" stroke="#7dd3fc" strokeWidth="1.6" />
-
-      {/* Output Layer Nodes */}
-      <circle cx="50" cy="24" r="4.5" fill="#38bdf8" stroke="#ffffff" strokeWidth="1.6" />
-      <circle cx="50" cy="40" r="4.5" fill="#38bdf8" stroke="#ffffff" strokeWidth="1.6" />
-    </svg>
-  );
-}
-
-export function MathModelingSvg({ size = 32, className = '', animate = true }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
-      role="img"
-      aria-label="Mathematical Wave and Modeling Equations"
-    >
-      <defs>
-        <linearGradient id="mathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#10b981" />
-          <stop offset="100%" stopColor="#06b6d4" />
-        </linearGradient>
-      </defs>
-
-      {/* Coordinate Grid Box */}
-      <path d="M10 52H54" stroke="#334155" strokeWidth="1.4" strokeLinecap="round" />
-      <path d="M14 10V54" stroke="#334155" strokeWidth="1.4" strokeLinecap="round" />
-      <path d="M14 52L52 14" stroke="#0ea5e9" strokeWidth="1" strokeDasharray="3 3" strokeOpacity="0.4" />
-
-      {/* Harmonic Wave Function */}
-      <path
-        d="M14 36C22 18 26 50 36 32C44 16 48 44 54 26"
-        stroke="url(#mathGrad)"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-
-      {/* Golden Ratio Spiral Curve */}
-      <path
-        d="M32 32C32 26 38 26 38 32C38 40 28 40 28 32C28 20 44 20 44 32C44 48 20 48 20 32"
-        stroke="#34d399"
+        r="18"
+        stroke="rgba(125,211,252,0.45)"
         strokeWidth="1.2"
-        strokeDasharray="2 2"
-        strokeOpacity="0.7"
+        strokeDasharray="6 3"
+        className={animate ? 'animate-spin-slow' : ''}
+        style={{ transformOrigin: '32px 32px' }}
       />
 
-      {/* Golden Ratio Key Nodes */}
-      <circle cx="36" cy="32" r="2.5" fill="#ffffff" />
-      <circle cx="26" cy="38" r="2" fill="#38bdf8" />
-      <circle cx="44" cy="24" r="2" fill="#34d399" />
-    </svg>
-  );
-}
+      {/* Precision Optical Aperture Blades */}
+      <g stroke="#7dd3fc" strokeWidth="1.4" strokeOpacity="0.75">
+        <line x1="32" y1="14" x2="43" y2="23" />
+        <line x1="47" y1="23" x2="43" y2="37" />
+        <line x1="47" y1="41" x2="32" y2="46" />
+        <line x1="32" y1="50" x2="21" y2="41" />
+        <line x1="17" y1="41" x2="21" y2="27" />
+        <line x1="17" y1="23" x2="32" y2="18" />
+      </g>
 
-export function DnaGenomicsSvg({ size = 32, className = '', animate = true }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
-      role="img"
-      aria-label="Biotechnology DNA Double Helix"
-    >
-      {/* Base Pair Rungs */}
-      <line x1="20" y1="16" x2="44" y2="16" stroke="#22c55e" strokeWidth="1.6" strokeLinecap="round" />
-      <line x1="24" y1="24" x2="40" y2="24" stroke="#10b981" strokeWidth="1.6" strokeLinecap="round" />
-      <line x1="30" y1="32" x2="34" y2="32" stroke="#34d399" strokeWidth="2" strokeLinecap="round" />
-      <line x1="24" y1="40" x2="40" y2="40" stroke="#10b981" strokeWidth="1.6" strokeLinecap="round" />
-      <line x1="20" y1="48" x2="44" y2="48" stroke="#22c55e" strokeWidth="1.6" strokeLinecap="round" />
-
-      {/* Strand Alpha */}
-      <path
-        d="M20 12C20 22 44 26 44 36C44 46 20 50 20 60"
-        stroke="#4ade80"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-
-      {/* Strand Beta */}
-      <path
-        d="M44 12C44 22 20 26 20 36C20 46 44 50 44 60"
-        stroke="#2dd4bf"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-      />
-
-      {/* Molecular Phosphate Spheres */}
-      <circle cx="20" cy="16" r="3" fill="#22c55e" stroke="#ffffff" strokeWidth="1" />
-      <circle cx="44" cy="16" r="3" fill="#2dd4bf" stroke="#ffffff" strokeWidth="1" />
-      <circle cx="44" cy="36" r="3" fill="#22c55e" stroke="#ffffff" strokeWidth="1" />
-      <circle cx="20" cy="36" r="3" fill="#2dd4bf" stroke="#ffffff" strokeWidth="1" />
-      <circle cx="20" cy="48" r="3" fill="#22c55e" stroke="#ffffff" strokeWidth="1" />
-      <circle cx="44" cy="48" r="3" fill="#2dd4bf" stroke="#ffffff" strokeWidth="1" />
-    </svg>
-  );
-}
-
-export function MaterialsCrystalSvg({ size = 32, className = '', animate = true }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
-      role="img"
-      aria-label="Materials Science Crystal Honeycomb Lattice"
-    >
-      <polygon
-        points="32,8 50,18 50,40 32,50 14,40 14,18"
-        stroke="#f59e0b"
-        strokeWidth="2"
-        fill="#f59e0b"
-        fillOpacity="0.1"
-      />
-      <polygon
-        points="32,18 42,24 42,36 32,42 22,36 22,24"
-        stroke="#fbbf24"
-        strokeWidth="1.6"
-        fill="#fbbf24"
-        fillOpacity="0.15"
-      />
-      <line x1="32" y1="8" x2="32" y2="18" stroke="#f59e0b" strokeWidth="1.6" />
-      <line x1="50" y1="18" x2="42" y2="24" stroke="#f59e0b" strokeWidth="1.6" />
-      <line x1="50" y1="40" x2="42" y2="36" stroke="#f59e0b" strokeWidth="1.6" />
-      <line x1="32" y1="50" x2="32" y2="42" stroke="#f59e0b" strokeWidth="1.6" />
-      <line x1="14" y1="40" x2="22" y2="36" stroke="#f59e0b" strokeWidth="1.6" />
-      <line x1="14" y1="18" x2="22" y2="24" stroke="#f59e0b" strokeWidth="1.6" />
-
-      {/* Atomic Nuclei at Vertices */}
-      <circle cx="32" cy="8" r="2.5" fill="#ffffff" />
-      <circle cx="50" cy="18" r="2.5" fill="#fde68a" />
-      <circle cx="50" cy="40" r="2.5" fill="#fde68a" />
-      <circle cx="32" cy="50" r="2.5" fill="#ffffff" />
-      <circle cx="14" cy="40" r="2.5" fill="#fde68a" />
-      <circle cx="14" cy="18" r="2.5" fill="#fde68a" />
-      <circle cx="32" cy="30" r="3.5" fill="#fbbf24" stroke="#ffffff" strokeWidth="1.2" />
-    </svg>
-  );
-}
-
-export function CyberShieldSvg({ size = 32, className = '', animate = true }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
-      role="img"
-      aria-label="Cybersecurity CTF Shield"
-    >
-      <defs>
-        <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#0284c7" />
-          <stop offset="100%" stopColor="#082f49" />
-        </linearGradient>
-      </defs>
-
-      <path
-        d="M32 8L50 16V32C50 44 42 52 32 58C22 52 14 44 14 32V16L32 8Z"
-        fill="url(#shieldGrad)"
-        fillOpacity="0.4"
-        stroke="#38bdf8"
-        strokeWidth="2.2"
-        strokeLinejoin="round"
-      />
-
-      <path
-        d="M32 16L44 22V32C44 40 39 46 32 50C25 46 20 40 20 32V22L32 16Z"
-        stroke="#7dd3fc"
-        strokeWidth="1.2"
-        strokeDasharray="3 2"
-      />
-
-      {/* Central Terminal Key / Hash Lock */}
-      <rect x="27" y="29" width="10" height="9" rx="2" fill="#0284c7" stroke="#38bdf8" strokeWidth="1.4" />
-      <path d="M29 29V25C29 23.3 30.3 22 32 22C33.7 22 35 23.3 35 25V29" stroke="#38bdf8" strokeWidth="1.6" />
-      <circle cx="32" cy="33" r="1.5" fill="#ffffff" />
-    </svg>
-  );
-}
-
-export function HolographicMediaSvg({ size = 32, className = '', animate = true }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={`shrink-0 ${className}`}
-      role="img"
-      aria-label="Media & Visual Production Aperture"
-    >
-      <circle cx="32" cy="32" r="22" stroke="#f43f5e" strokeWidth="2" strokeDasharray="6 3" />
-      <circle cx="32" cy="32" r="15" stroke="#fb7185" strokeWidth="1.5" />
-      {/* Aperture Blades */}
-      <line x1="32" y1="17" x2="42" y2="24" stroke="#f43f5e" strokeWidth="1.8" />
-      <line x1="42" y1="24" x2="44" y2="36" stroke="#f43f5e" strokeWidth="1.8" />
-      <line x1="44" y1="36" x2="36" y2="45" stroke="#f43f5e" strokeWidth="1.8" />
-      <line x1="36" y1="45" x2="24" y2="42" stroke="#f43f5e" strokeWidth="1.8" />
-      <line x1="24" y1="42" x2="20" y2="30" stroke="#f43f5e" strokeWidth="1.8" />
-      <line x1="20" y1="30" x2="32" y2="17" stroke="#f43f5e" strokeWidth="1.8" />
-      <circle cx="32" cy="32" r="5" fill="#f43f5e" />
+      {/* Focal Point */}
+      <circle cx="32" cy="32" r="5" fill="#38bdf8" stroke="#ffffff" strokeWidth="1.5" />
       <circle cx="30" cy="30" r="1.5" fill="#ffffff" />
     </svg>
   );
