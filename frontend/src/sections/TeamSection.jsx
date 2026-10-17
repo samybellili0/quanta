@@ -126,15 +126,15 @@ export default function TeamSection() {
                   </div>
                 </div>
 
-                {/* Right: Bespoke Department Vector Emblem */}
+                {/* Right: Bespoke Department Vector Emblem with Aperture Frame */}
                 <div
-                  className={`transition-all duration-500 shrink-0 ${
+                  className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
                     isActive
-                      ? 'scale-110 opacity-100'
-                      : 'scale-90 opacity-50 group-hover:opacity-90'
+                      ? 'bg-gradient-to-br from-cyan-400/20 via-sky-500/10 to-transparent border border-cyan-400/50 shadow-[0_0_20px_rgba(34,211,238,0.25)] scale-105'
+                      : 'bg-white/[0.03] border border-white/10 group-hover:border-cyan-400/30 group-hover:bg-cyan-500/5 group-hover:scale-105'
                   }`}
                 >
-                  <RoleSvg size={34} animate={isActive} />
+                  <RoleSvg size={24} animate={isActive} />
                 </div>
               </div>
             </div>

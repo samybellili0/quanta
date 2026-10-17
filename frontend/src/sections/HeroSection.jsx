@@ -278,7 +278,7 @@ export default function HeroSection() {
           <Link
             to="/join"
             onClick={() => playQuantumChime(784, 0.18)}
-            className="group relative inline-flex items-center gap-2 py-2.5 px-2 text-cyan-300 hover:text-white font-semibold text-sm sm:text-base transition-colors hairline-sweep"
+            className="group relative inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-md bg-white/5 hover:bg-cyan-400/15 text-cyan-300 hover:text-white border border-cyan-400/40 hover:border-cyan-400 font-semibold text-sm sm:text-base transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_24px_rgba(56,189,248,0.35)]"
           >
             <span>Join Quanta</span>
             <span className="text-cyan-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5">
@@ -308,19 +308,19 @@ export default function HeroSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.45, delay: idx * 0.06 }}
-                className={`group relative py-4 sm:py-5 px-3.5 sm:px-6 flex items-center justify-between gap-2 hairline-sweep ${borderClasses}`}
+                className={`group relative py-4 sm:py-5 px-3.5 sm:px-6 flex items-center justify-between gap-3 hairline-sweep ${borderClasses}`}
               >
                 <div className="min-w-0">
                   <div className="font-display font-bold text-2xl sm:text-4xl text-white group-hover:text-cyan-300 transition-colors tracking-tight">
                     {val}
                   </div>
-                  <div className="text-xs sm:text-sm text-slate-400 mt-0.5 truncate">
+                  <div className="text-xs sm:text-sm text-slate-300 mt-0.5 truncate font-medium">
                     {label}
                   </div>
                 </div>
 
-                <div className="opacity-75 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 shrink-0">
-                  <StatSvg size={32} animate={true} />
+                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-sky-400/10 to-cyan-500/5 border border-sky-400/25 flex items-center justify-center shrink-0 group-hover:border-cyan-400 group-hover:bg-cyan-400/15 group-hover:shadow-[0_0_20px_rgba(56,189,248,0.3)] transition-all duration-300">
+                  <StatSvg size={26} animate={true} />
                 </div>
               </motion.div>
             );

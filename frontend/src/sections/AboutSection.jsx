@@ -262,15 +262,15 @@ export default function AboutSection() {
                       </h3>
                     </div>
 
-                    {/* High-Precision Custom Vector Icon */}
+                    {/* High-Precision Custom Vector Icon in Aperture Frame */}
                     <div
-                      className={`transition-all duration-500 shrink-0 ${
+                      className={`w-12 h-12 sm:w-14 sm:h-14 rounded-xl border flex items-center justify-center shrink-0 transition-all duration-300 ${
                         isActive
-                          ? 'scale-110 opacity-100'
-                          : 'scale-90 opacity-60 group-hover:opacity-95'
+                          ? 'bg-gradient-to-br from-sky-400/20 to-cyan-500/10 border-cyan-400 shadow-[0_0_24px_rgba(56,189,248,0.35)] scale-105'
+                          : 'bg-[#0a1630]/80 border-sky-400/20 group-hover:border-cyan-400/50 group-hover:bg-cyan-400/10'
                       }`}
                     >
-                      <RowSvg size={38} animate={isActive} />
+                      <RowSvg size={30} animate={isActive} />
                     </div>
                   </div>
 
@@ -288,7 +288,7 @@ export default function AboutSection() {
                           <p className="text-xs sm:text-base text-slate-300 leading-relaxed max-w-xl">
                             {desc}
                           </p>
-                          <span className="lg:hidden font-mono text-[11px] text-cyan-400/90">
+                          <span className="lg:hidden font-mono text-[11px] text-cyan-400/90 font-medium">
                             {meta.formula}
                           </span>
                         </div>
@@ -306,31 +306,34 @@ export default function AboutSection() {
               className={`absolute inset-0 rounded-full bg-gradient-radial ${activeMeta.spectrum} blur-3xl opacity-60 pointer-events-none transition-all duration-700`}
             />
 
-            <div className="relative w-[330px] h-[330px] flex items-center justify-center">
+            <div className="relative w-[340px] h-[340px] rounded-2xl border border-sky-400/20 bg-gradient-to-b from-[#0a1630]/80 to-[#040816]/90 backdrop-blur-md flex flex-col items-center justify-center p-6 shadow-[0_0_40px_rgba(0,0,0,0.6)] group hover:border-cyan-400/50 transition-colors">
+              {/* Subtle top laser scan */}
+              <div className="quantum-laser-line" />
+
               <svg
-                className="absolute inset-0 w-full h-full animate-spin-slow pointer-events-none"
+                className="absolute inset-0 w-full h-full animate-spin-slow pointer-events-none opacity-40"
                 viewBox="0 0 340 340"
                 fill="none"
               >
                 <circle
                   cx="170"
                   cy="170"
-                  r="160"
-                  stroke="rgba(56,189,248,0.22)"
-                  strokeWidth="1.2"
+                  r="150"
+                  stroke="rgba(56,189,248,0.3)"
+                  strokeWidth="1"
                   strokeDasharray="3 9"
                 />
                 <circle
                   cx="170"
                   cy="170"
-                  r="132"
-                  stroke="rgba(255,255,255,0.1)"
+                  r="125"
+                  stroke="rgba(255,255,255,0.12)"
                   strokeWidth="1"
                 />
-                <line x1="170" y1="2" x2="170" y2="18" stroke="#38bdf8" strokeWidth="1.5" />
-                <line x1="170" y1="322" x2="170" y2="338" stroke="#38bdf8" strokeWidth="1.5" />
-                <line x1="2" y1="170" x2="18" y2="170" stroke="#38bdf8" strokeWidth="1.5" />
-                <line x1="322" y1="170" x2="338" y2="170" stroke="#38bdf8" strokeWidth="1.5" />
+                <line x1="170" y1="8" x2="170" y2="24" stroke="#38bdf8" strokeWidth="1.5" />
+                <line x1="170" y1="316" x2="170" y2="332" stroke="#38bdf8" strokeWidth="1.5" />
+                <line x1="8" y1="170" x2="24" y2="170" stroke="#38bdf8" strokeWidth="1.5" />
+                <line x1="316" y1="170" x2="332" y2="170" stroke="#38bdf8" strokeWidth="1.5" />
               </svg>
 
               <AnimatePresence mode="wait">
@@ -340,15 +343,20 @@ export default function AboutSection() {
                   animate={{ opacity: 1, scale: 1, rotate: 0, filter: 'blur(0px)' }}
                   exit={{ opacity: 0, scale: 0.86, rotate: 10, filter: 'blur(5px)' }}
                   transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative z-10 flex flex-col items-center text-center px-6"
+                  className="relative z-10 flex flex-col items-center text-center w-full"
                 >
-                  <ActiveSvg size={140} animate={true} />
-                  <div className="mt-5 font-mono text-xs text-cyan-300 tracking-widest">
+                  <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-sky-400/15 via-cyan-500/10 to-transparent border border-sky-400/30 flex items-center justify-center shadow-[0_0_30px_rgba(56,189,248,0.25)]">
+                    <ActiveSvg size={76} animate={true} />
+                  </div>
+                  <div className="mt-5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-400/40 font-mono text-xs text-cyan-300 tracking-wider">
                     {activeMeta.formula}
                   </div>
-                  <div className="mt-1 font-display font-bold text-lg text-white">
+                  <div className="mt-2.5 font-display font-bold text-xl text-white tracking-wide">
                     {activeTitle}
                   </div>
+                  <p className="mt-1 text-xs text-slate-300 max-w-[260px] line-clamp-2">
+                    {DOMAINS[activeIdx]?.[2]}
+                  </p>
                 </motion.div>
               </AnimatePresence>
             </div>

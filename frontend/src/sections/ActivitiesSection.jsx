@@ -157,14 +157,15 @@ export default function ActivitiesSection() {
                   >
                     /{num}
                   </span>
+                  {/* Precision Scientific Aperture Pedestal */}
                   <div
-                    className={`shrink-0 transition-transform duration-500 ${
+                    className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shrink-0 transition-all duration-300 ${
                       isActive
-                        ? 'scale-110 -rotate-3'
-                        : 'scale-95 opacity-75 group-hover:opacity-100 group-hover:scale-110'
+                        ? 'bg-gradient-to-br from-cyan-400/20 via-sky-500/10 to-transparent border border-cyan-400/50 shadow-[0_0_20px_rgba(34,211,238,0.25)] scale-105'
+                        : 'bg-white/[0.03] border border-white/10 group-hover:border-cyan-400/30 group-hover:bg-cyan-500/5 group-hover:scale-105'
                     }`}
                   >
-                    <IconSvg size={36} animate={isActive} />
+                    <IconSvg size={26} animate={isActive} />
                   </div>
                   <h3
                     className={`font-display font-bold text-base sm:text-2xl transition-all duration-300 ${

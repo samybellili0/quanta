@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Logo from './Logo.jsx';
-import { Volume2, VolumeX, Menu, X } from 'lucide-react';
-import { useSoundEffects } from '../hooks/useSoundEffects.js';
+import { Menu, X } from 'lucide-react';
 
 const LINKS = [
   ['home', 'Home'],
@@ -18,12 +16,10 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [solid, setSolid] = useState(false);
   const [active, setActive] = useState('home');
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const { playClick, playQuantumChime } = useSoundEffects();
   const location = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setSolid(window.scrollY > 40);
+    const onScroll = () => setSolid(window.scrollY > 30);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -35,7 +31,7 @@ export default function Navbar() {
           }
         });
       },
-      { rootMargin: '-45% 0px -50% 0px' }
+      { rootMargin: '-35% 0px -45% 0px' }
     );
 
     LINKS.forEach(([id]) => {
@@ -49,8 +45,7 @@ export default function Navbar() {
     };
   }, [location.pathname]);
 
-  const handleNavClick = (id) => {
-    if (soundEnabled) playClick();
+  const handleNavClick = () => {
     setOpen(false);
   };
 
@@ -58,22 +53,27 @@ export default function Navbar() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         solid
-          ? 'backdrop-blur-xl bg-[#03060f]/90 border-b border-white/10 py-3'
+          ? 'backdrop-blur-xl bg-[#03060f]/92 border-b border-white/10 py-2.5 shadow-[0_8px_30px_rgba(0,0,0,0.5)]'
           : 'bg-transparent py-4 border-b border-transparent'
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between">
+        {/* Head Brand Logo */}
         <a
           href="/#home"
-          onClick={() => handleNavClick('home')}
-          className="flex items-center gap-2.5 text-white font-display font-bold text-lg tracking-wider"
+          onClick={handleNavClick}
+          className="flex items-center group py-0.5 focus:outline-none"
+          aria-label="Quanta Multidisciplinaire Home"
         >
-          <Logo size={40} glow={true} />
-          <span>QUANTA</span>
+          <img
+            src="/logo/quanta-brand-head.png"
+            alt="University of Algiers | Quanta"
+            className="h-9 sm:h-11 w-auto max-w-[210px] sm:max-w-[260px] object-contain brightness-110 contrast-110 drop-shadow-[0_0_16px_rgba(56,189,248,0.3)] transition-transform duration-300 group-hover:scale-105"
+          />
         </a>
 
         {/* Desktop Nav — Zero-Box Sliding Hairline Indicator */}
-        <nav aria-label="Main" className="hidden md:flex items-center gap-6">
+        <nav aria-label="Main" className="hidden md:flex items-center gap-7">
           {LINKS.map(([id, label]) => {
             const isCurrent =
               location.pathname === '/join' ? id === 'join' : active === id;
@@ -85,8 +85,8 @@ export default function Navbar() {
                 {isCurrent && (
                   <motion.span
                     layoutId="nav-hairline"
-                    transition={{ type: 'spring', stiffness: 360, damping: 30 }}
-                    className="absolute -bottom-1.5 left-0 right-0 h-[1.5px] bg-cyan-400 shadow-[0_0_10px_#38bdf8]"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-cyan-400 shadow-[0_0_12px_#38bdf8]"
                   />
                 )}
               </>
@@ -96,13 +96,10 @@ export default function Navbar() {
               <Link
                 key={id}
                 to="/join"
-                onClick={() => {
-                  if (soundEnabled) playQuantumChime(784, 0.15);
-                  setOpen(false);
-                }}
+                onClick={handleNavClick}
                 aria-current={isCurrent ? 'true' : undefined}
-                className={`relative py-1 text-sm font-medium transition-colors ${
-                  isCurrent ? 'text-cyan-300' : 'text-slate-300/80 hover:text-white'
+                className={`relative py-1 text-sm font-medium tracking-wide transition-colors ${
+                  isCurrent ? 'text-cyan-300 font-semibold' : 'text-slate-300 hover:text-white'
                 }`}
               >
                 {content}
@@ -111,44 +108,26 @@ export default function Navbar() {
               <a
                 key={id}
                 href={href}
-                onClick={() => handleNavClick(id)}
+                onClick={handleNavClick}
                 aria-current={isCurrent ? 'true' : undefined}
-                className={`relative py-1 text-sm font-medium transition-colors ${
-                  isCurrent ? 'text-cyan-300' : 'text-slate-300/80 hover:text-white'
+                className={`relative py-1 text-sm font-medium tracking-wide transition-colors ${
+                  isCurrent ? 'text-cyan-300 font-semibold' : 'text-slate-300 hover:text-white'
                 }`}
               >
                 {content}
               </a>
             );
           })}
-
-          <button
-            onClick={() => {
-              if (!soundEnabled) playQuantumChime(880, 0.12);
-              setSoundEnabled(!soundEnabled);
-            }}
-            title={soundEnabled ? 'Sound on' : 'Sound muted'}
-            className="ml-2 p-1.5 text-slate-300 hover:text-cyan-300 transition-colors"
-          >
-            {soundEnabled ? (
-              <Volume2 className="w-4 h-4 text-cyan-400" />
-            ) : (
-              <VolumeX className="w-4 h-4 text-slate-500" />
-            )}
-          </button>
         </nav>
 
-        {/* Mobile Burger */}
+        {/* Mobile Burger Toggle (Minimum 44x44px for WCAG AAA tap target) */}
         <button
           aria-label="Toggle menu"
           aria-expanded={open}
-          onClick={() => {
-            if (soundEnabled) playClick();
-            setOpen(!open);
-          }}
-          className="md:hidden p-2 text-white hover:text-cyan-300 transition-colors"
+          onClick={() => setOpen(!open)}
+          className="md:hidden w-11 h-11 flex items-center justify-center text-slate-200 hover:text-cyan-300 transition-colors"
         >
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
@@ -156,7 +135,7 @@ export default function Navbar() {
       {open && (
         <nav
           aria-label="Mobile Main"
-          className="md:hidden bg-[#03060f]/98 border-b border-white/10 px-6 py-4 flex flex-col divide-y divide-white/10 animate-step-enter"
+          className="md:hidden bg-[#03060f]/98 backdrop-blur-2xl border-b border-white/10 px-6 py-4 flex flex-col divide-y divide-white/10 animate-step-enter"
         >
           {LINKS.map(([id, label], idx) => {
             const href = id === 'join' ? '/join' : `/#${id}`;
@@ -165,21 +144,21 @@ export default function Navbar() {
               <Link
                 key={id}
                 to="/join"
-                onClick={() => handleNavClick(id)}
+                onClick={handleNavClick}
                 className="py-3.5 flex items-center justify-between text-base font-display font-semibold text-white hover:text-cyan-300 transition-colors"
               >
                 <span>{label}</span>
-                <span className="font-mono text-xs text-cyan-400/70">/{num}</span>
+                <span className="font-mono text-xs text-cyan-400/80">/{num}</span>
               </Link>
             ) : (
               <a
                 key={id}
                 href={href}
-                onClick={() => handleNavClick(id)}
+                onClick={handleNavClick}
                 className="py-3.5 flex items-center justify-between text-base font-display font-semibold text-white hover:text-cyan-300 transition-colors"
               >
                 <span>{label}</span>
-                <span className="font-mono text-xs text-cyan-400/70">/{num}</span>
+                <span className="font-mono text-xs text-cyan-400/80">/{num}</span>
               </a>
             );
           })}
