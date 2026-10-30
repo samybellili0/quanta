@@ -11,7 +11,6 @@ import {
 } from '../components/OriginalIcons.jsx';
 import { useSoundEffects } from '../hooks/useSoundEffects.js';
 
-const FORM_URL = 'https://quanta-registrations.web.app/';
 const DEPT_SVGS = [
   AtomOrbitalSvg,
   SynapseNetworkSvg,
@@ -21,7 +20,7 @@ const DEPT_SVGS = [
 ];
 
 export default function JoinPage() {
-  const { playQuantumChime, playHoverTick } = useSoundEffects();
+  const { playHoverTick } = useSoundEffects();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -94,7 +93,7 @@ export default function JoinPage() {
         })}
       </div>
 
-      {/* Open Application Horizon */}
+      {/* Registrations Closed Banner */}
       <div className="border-y border-white/10 py-12 sm:py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
         <div>
           <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight">
@@ -105,16 +104,14 @@ export default function JoinPage() {
           </p>
         </div>
 
-        <a
-          href={FORM_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => playQuantumChime(880, 0.2)}
-          className="btn-shimmer inline-flex items-center gap-3 px-7 py-3.5 rounded-md bg-[#1d4ed8] hover:bg-blue-600 text-white border border-cyan-400 font-semibold text-sm sm:text-base transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_28px_rgba(56,189,248,0.5)]"
-        >
-          <span>Open the application form</span>
-          <span>↗</span>
-        </a>
+        <div className="inline-flex flex-col items-center gap-2 px-7 py-4 rounded-md border border-red-500/40 bg-red-900/20 text-center">
+          <span className="text-red-400 font-bold text-sm sm:text-base tracking-wide uppercase">
+            🔒 Registrations Closed
+          </span>
+          <span className="text-slate-400 text-xs sm:text-sm">
+            Due to time constraints — try again next time!
+          </span>
+        </div>
       </div>
     </section>
   );
