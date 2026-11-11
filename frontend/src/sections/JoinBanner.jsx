@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { SOCIALS } from '../data/club.js';
 import { useSoundEffects } from '../hooks/useSoundEffects.js';
+import { useRecruitmentStatus } from '../hooks/useRecruitmentStatus.js';
 
 export const SOCIAL_ICONS = {
   Instagram: (
@@ -60,6 +61,10 @@ export function SocialIcons() {
 
 export default function JoinBanner() {
   const { playQuantumChime } = useSoundEffects();
+  const { status } = useRecruitmentStatus();
+
+  const isPaused = status === 'paused';
+  const isClosed = status === 'closed';
 
   return (
     <section
@@ -106,10 +111,22 @@ export default function JoinBanner() {
           {/* Left Column (7 cols): Vision & 3-Stage Fellowship Trajectory */}
           <div className="lg:col-span-7 flex flex-col gap-6">
             {/* Status Beacon */}
-            <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 font-mono text-xs tracking-wider w-fit">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              <span>RECRUITMENT ACTIVE // COHORT 2026</span>
-            </div>
+            {isPaused ? (
+              <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 font-mono text-xs tracking-wider w-fit">
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                <span>RECRUITMENT PAUSED // TEMPORARY HALT</span>
+              </div>
+            ) : isClosed ? (
+              <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-rose-400/10 border border-rose-400/30 text-rose-300 font-mono text-xs tracking-wider w-fit">
+                <span className="w-2 h-2 rounded-full bg-rose-400" />
+                <span>RECRUITMENT CLOSED // COHORT 2026</span>
+              </div>
+            ) : (
+              <div className="inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-cyan-400/10 border border-cyan-400/30 text-cyan-300 font-mono text-xs tracking-wider w-fit">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                <span>RECRUITMENT ACTIVE // COHORT 2026</span>
+              </div>
+            )}
 
             <div>
               <h2 className="font-display font-bold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.08]">
@@ -150,41 +167,89 @@ export default function JoinBanner() {
 
           {/* Right Column (5 cols): High-Impact Action Cockpit Card */}
           <div className="lg:col-span-5">
-            <div className="relative p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#0c1836]/90 via-[#070f24]/90 to-[#030614]/95 border border-cyan-400/30 shadow-[0_0_40px_rgba(56,189,248,0.12)] backdrop-blur-md flex flex-col gap-6">
+            <div
+              className={`relative p-6 sm:p-8 rounded-2xl bg-gradient-to-b from-[#0c1836]/90 via-[#070f24]/90 to-[#030614]/95 border backdrop-blur-md flex flex-col gap-6 shadow-2xl ${
+                isPaused
+                  ? 'border-amber-400/35 shadow-[0_0_40px_rgba(245,158,11,0.15)]'
+                  : isClosed
+                  ? 'border-rose-400/35 shadow-[0_0_40px_rgba(244,63,94,0.15)]'
+                  : 'border-cyan-400/30 shadow-[0_0_40px_rgba(56,189,248,0.12)]'
+              }`}
+            >
               {/* Subtle Corner Reticles */}
-              <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-cyan-400/50" />
-              <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-cyan-400/50" />
-              <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-cyan-400/50" />
-              <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-cyan-400/50" />
+              <div className={`absolute top-2 left-2 w-2 h-2 border-t border-l ${isPaused ? 'border-amber-400/50' : isClosed ? 'border-rose-400/50' : 'border-cyan-400/50'}`} />
+              <div className={`absolute top-2 right-2 w-2 h-2 border-t border-r ${isPaused ? 'border-amber-400/50' : isClosed ? 'border-rose-400/50' : 'border-cyan-400/50'}`} />
+              <div className={`absolute bottom-2 left-2 w-2 h-2 border-b border-l ${isPaused ? 'border-amber-400/50' : isClosed ? 'border-rose-400/50' : 'border-cyan-400/50'}`} />
+              <div className={`absolute bottom-2 right-2 w-2 h-2 border-b border-r ${isPaused ? 'border-amber-400/50' : isClosed ? 'border-rose-400/50' : 'border-cyan-400/50'}`} />
 
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs uppercase tracking-widest text-cyan-300/80">
+                <span className="font-mono text-xs uppercase tracking-widest text-slate-300/80">
                   Admissions Portal
                 </span>
-                <span className="font-mono text-xs text-emerald-400 flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  OPEN
-                </span>
+                {isPaused ? (
+                  <span className="font-mono text-xs text-amber-400 flex items-center gap-1.5 font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                    PAUSED
+                  </span>
+                ) : isClosed ? (
+                  <span className="font-mono text-xs text-rose-400 flex items-center gap-1.5 font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+                    CLOSED
+                  </span>
+                ) : (
+                  <span className="font-mono text-xs text-emerald-400 flex items-center gap-1.5 font-bold">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    OPEN
+                  </span>
+                )}
               </div>
 
               <div>
                 <h3 className="font-display font-bold text-xl sm:text-2xl text-white">
-                  Ready to Shape the Future?
+                  {isPaused
+                    ? 'Recruitment On Pause'
+                    : isClosed
+                    ? 'Recruitment Closed'
+                    : 'Ready to Shape the Future?'}
                 </h3>
                 <p className="mt-2 text-xs sm:text-sm text-slate-300/75 leading-relaxed">
-                  Open to all registered university students in Algeria. No previous club experience required.
+                  {isPaused
+                    ? 'Applications are temporarily on pause while submitted profiles are reviewed. Follow our channels or check back soon.'
+                    : isClosed
+                    ? 'Registrations for Cohort 2026 are officially closed. Stay tuned for future editions and public STEM workshops.'
+                    : 'Open to all registered university students in Algeria. No previous club experience required.'}
                 </p>
               </div>
 
               <div className="flex flex-col gap-3 pt-1">
-                <Link
-                  to="/join"
-                  onClick={() => playQuantumChime(880, 0.2)}
-                  className="w-full inline-flex items-center justify-center gap-3 py-3.5 px-6 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-slate-950 font-display font-bold text-base shadow-[0_0_24px_rgba(56,189,248,0.45)] hover:shadow-[0_0_36px_rgba(56,189,248,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
-                >
-                  <span>Start Your Application</span>
-                  <span className="text-lg">→</span>
-                </Link>
+                {isPaused ? (
+                  <Link
+                    to="/join"
+                    onClick={() => playQuantumChime(600, 0.2)}
+                    className="w-full inline-flex items-center justify-center gap-3 py-3.5 px-6 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 text-slate-950 font-display font-bold text-base shadow-[0_0_24px_rgba(245,158,11,0.45)] hover:shadow-[0_0_36px_rgba(245,158,11,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                  >
+                    <span>View Recruitment Notice</span>
+                    <span className="text-lg">→</span>
+                  </Link>
+                ) : isClosed ? (
+                  <Link
+                    to="/join"
+                    onClick={() => playQuantumChime(500, 0.2)}
+                    className="w-full inline-flex items-center justify-center gap-3 py-3.5 px-6 rounded-xl bg-gradient-to-r from-slate-700 to-slate-800 text-slate-300 font-display font-bold text-base border border-white/10 hover:border-white/20 hover:scale-[1.02] transition-all duration-300"
+                  >
+                    <span>Recruitment Closed</span>
+                    <span className="text-lg">→</span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/join"
+                    onClick={() => playQuantumChime(880, 0.2)}
+                    className="w-full inline-flex items-center justify-center gap-3 py-3.5 px-6 rounded-xl bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 text-slate-950 font-display font-bold text-base shadow-[0_0_24px_rgba(56,189,248,0.45)] hover:shadow-[0_0_36px_rgba(56,189,248,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                  >
+                    <span>Start Your Application</span>
+                    <span className="text-lg">→</span>
+                  </Link>
+                )}
 
                 <Link
                   to="/join#departments"

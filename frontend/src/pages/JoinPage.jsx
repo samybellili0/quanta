@@ -10,7 +10,9 @@ import {
   HolographicMediaSvg,
 } from '../components/OriginalIcons.jsx';
 import { useSoundEffects } from '../hooks/useSoundEffects.js';
+import { useRecruitmentStatus } from '../hooks/useRecruitmentStatus.js';
 
+const FORM_URL = 'https://quanta-registrations.web.app/';
 const DEPT_SVGS = [
   AtomOrbitalSvg,
   SynapseNetworkSvg,
@@ -20,7 +22,11 @@ const DEPT_SVGS = [
 ];
 
 export default function JoinPage() {
-  const { playHoverTick } = useSoundEffects();
+  const { playQuantumChime, playHoverTick } = useSoundEffects();
+  const { status } = useRecruitmentStatus();
+
+  const isPaused = status === 'paused';
+  const isClosed = status === 'closed';
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -93,26 +99,79 @@ export default function JoinPage() {
         })}
       </div>
 
-      {/* Registrations Closed Banner */}
-      <div className="border-y border-white/10 py-12 sm:py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
-        <div>
-          <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight">
-            Application
-          </h2>
-          <p className="mt-2 text-sm sm:text-base text-slate-300">
-            Ready to apply? The application takes about 15 minutes.
-          </p>
-        </div>
+      {/* Application Status / Action Horizon */}
+      {isPaused ? (
+        <div className="border border-amber-500/25 bg-amber-500/[0.04] py-10 sm:py-14 px-6 sm:px-10 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-[0_0_35px_rgba(245,158,11,0.12)]">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-500/15 border border-amber-400/35 text-amber-300 font-mono text-xs">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <span>RECRUITMENT PAUSED // TEMPORARY HALT</span>
+            </div>
+            <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight">
+              Registrations On Pause
+            </h2>
+            <p className="text-sm sm:text-base text-slate-300/90 max-w-xl leading-relaxed">
+              Application submissions are temporarily paused for candidate evaluation. Check back soon or follow our official social channels for reopening alerts.
+            </p>
+          </div>
 
-        <div className="inline-flex flex-col items-center gap-2 px-7 py-4 rounded-md border border-red-500/40 bg-red-900/20 text-center">
-          <span className="text-red-400 font-bold text-sm sm:text-base tracking-wide uppercase">
-            🔒 Registrations Closed
-          </span>
-          <span className="text-slate-400 text-xs sm:text-sm">
-            Due to time constraints — try again next time!
-          </span>
+          <a
+            href={FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => playQuantumChime(600, 0.2)}
+            className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-bold text-sm sm:text-base shadow-[0_0_25px_rgba(245,158,11,0.4)] transition-all hover:scale-105 shrink-0"
+          >
+            <span>Check Portal Status</span>
+            <span>↗</span>
+          </a>
         </div>
-      </div>
+      ) : isClosed ? (
+        <div className="border border-red-500/30 bg-red-900/15 py-10 sm:py-14 px-6 sm:px-10 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-[0_0_35px_rgba(244,63,94,0.12)]">
+          <div className="space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-rose-500/15 border border-rose-400/35 text-rose-300 font-mono text-xs">
+              <span className="w-2 h-2 rounded-full bg-rose-400" />
+              <span>RECRUITMENT CLOSED // COHORT 2026</span>
+            </div>
+            <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight">
+              Registrations Closed
+            </h2>
+            <p className="text-sm sm:text-base text-slate-300/90 max-w-xl leading-relaxed">
+              Applications for Cohort 2026 are officially closed. Thank you to everyone who applied! Follow our events and community channels for future opportunities.
+            </p>
+          </div>
+          <div className="inline-flex flex-col items-center gap-1.5 px-6 py-3 rounded-xl border border-red-500/40 bg-red-950/40 text-center shrink-0">
+            <span className="text-red-400 font-bold text-sm tracking-wide uppercase">
+              🔒 Registrations Closed
+            </span>
+            <span className="text-slate-400 text-xs">
+              Due to time constraints — try again next time!
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div className="border-y border-white/10 py-12 sm:py-16 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
+          <div>
+            <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight">
+              Application
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-slate-300">
+              Ready to apply? The application takes about 15 minutes.
+            </p>
+          </div>
+
+          <a
+            href={FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => playQuantumChime(880, 0.2)}
+            className="btn-shimmer inline-flex items-center gap-3 px-7 py-3.5 rounded-md bg-[#1d4ed8] hover:bg-blue-600 text-white border border-cyan-400 font-semibold text-sm sm:text-base transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_28px_rgba(56,189,248,0.5)]"
+          >
+            <span>Open the application form</span>
+            <span>↗</span>
+          </a>
+        </div>
+      )}
     </section>
   );
 }
